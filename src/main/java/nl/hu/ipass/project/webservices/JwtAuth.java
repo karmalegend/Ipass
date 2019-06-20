@@ -7,6 +7,7 @@ import io.jsonwebtoken.impl.crypto.MacProvider;
 import nl.hu.ipass.project.persistance.UserDoaPostgressImpl;
 
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

@@ -7,7 +7,11 @@ function login(event){
         if(response.ok) return response.json();
         else throw "Wrong username/password";
     })
-    .then(myJson => window.sessionStorage.setItem("myJWT", myJson.JWT))
+    .then( (myJson) => {
+        console.log("test 1.25");
+            window.sessionStorage.setItem("myJWT", myJson.JWT);
+            console.log("test 1.5");
+        })
     .catch(error => console.log(error));
 }
 

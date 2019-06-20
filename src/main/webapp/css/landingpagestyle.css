@@ -1,0 +1,46 @@
+.customerRow{
+    border: 1px solid black;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+#initialMargin{
+    margin-top:5%;
+    position: relative;
+}
+
+.customerName{
+    margin-left: 5%;
+    padding: 5px;
+    display: inline-block;
+}
+
+.customerPackage{
+    margin-left: 10%;
+    display: inline-block;
+}
+
+.customerServices{
+    margin-left: 3%;
+    display: inline-block;   
+}
+
+.customerServices ul{
+    list-style: none;
+}
+
+.customerInfo{
+    margin-left: 5%;
+    display: inline-block;
+}
+
+.customerPayment{
+    margin-left: 10%;
+    display: inline-block;
+}
+
+
+.customerButtons{
+    margin-left: 80%;
+    margin-top: 5%;
+}

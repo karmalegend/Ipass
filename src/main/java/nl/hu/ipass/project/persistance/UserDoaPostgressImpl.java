@@ -1,5 +1,7 @@
 package nl.hu.ipass.project.persistance;
 
+import nl.hu.ipass.project.persistance.DaoInterfaces.UserDao;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
