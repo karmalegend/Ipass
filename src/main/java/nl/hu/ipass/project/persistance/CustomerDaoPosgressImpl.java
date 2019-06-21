@@ -153,6 +153,27 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
         }
 
     }
+
+    @Override
+    public void addCustomer(Customer customer) {
+        try{
+            PreparedStatement prepAddCus = con.prepareStatement("INSERT INTO Klant(Klantnummer,Bedrijfsnaam,KvKnummer,Emailadress,Telefoonnummer)" +
+                    "VALUES(?,?,?,?,?)");
+
+            prepAddCus.setInt(1,customer.getCustomerID());
+            prepAddCus.setString(2,customer.getCompanyname());
+            prepAddCus.setInt(3,customer.getKvkNumber());
+            prepAddCus.setString(4,customer.getEmailadress());
+            prepAddCus.setInt(5,customer.getPhonenumber());
+
+            prepAddCus.executeQuery();
+
+        }
+        catch(SQLException e){
+            System.out.println(e);
+            e.printStackTrace();
+        }
+    }
 }
 
 

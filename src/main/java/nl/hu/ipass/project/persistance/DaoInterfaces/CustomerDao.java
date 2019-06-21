@@ -9,4 +9,5 @@ public interface CustomerDao {
     void updateCustomer(Customer customer);
     void deleteCustomerbyId(int id);
     void updateEmailbyID(int id, String email);
+    void addCustomer(Customer customer);
 }

@@ -19,9 +19,8 @@ public class Order {
         this.services = services;
     }
 
-    public ArrayList<Service> addService(Service dienst){
+    public void addService(Service dienst){
         services.add(dienst);
-        return services;
     }
 
     public int getOrderID() {
@@ -32,5 +31,11 @@ public class Order {
         this.orderID = orderID;
     }
 
-
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderID=" + orderID +
+                ", services=" + services +
+                '}';
+    }
 }
