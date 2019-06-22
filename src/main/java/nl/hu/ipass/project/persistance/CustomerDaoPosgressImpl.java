@@ -57,7 +57,7 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
             return allCustomers;
         }
         catch (SQLException e){
-            System.out.println("this error comes from customerdao");
+            System.out.println("this error comes from method 1 in customerdao");
             e.printStackTrace();
             System.out.println(e);
         }
@@ -95,6 +95,7 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
 
         }
         catch (SQLException e){
+            System.out.println("this error comes from method 2 in customerdao");
             e.printStackTrace();
             System.out.println(e);
         }
@@ -121,6 +122,7 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
             System.out.println("User with ID " + id + "succesfully deleted");
         }
         catch (SQLException e){
+            System.out.println("this error comes from method 3 in customerdao");
             System.out.println(e);
             e.printStackTrace();
         }
@@ -155,6 +157,7 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
 
         }
         catch(SQLException e){
+            System.out.println("this error comes from method 4 in customerdao");
             System.out.println(e);
             e.printStackTrace();
         }
@@ -177,6 +180,7 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
 
         }
         catch(SQLException e){
+            System.out.println("this error comes from method 5 in customerdao");
             System.out.println(e);
             e.printStackTrace();
         }

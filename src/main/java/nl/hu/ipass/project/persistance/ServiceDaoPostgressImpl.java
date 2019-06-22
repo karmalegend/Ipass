@@ -29,6 +29,7 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
 
         }
         catch(SQLException e){
+            System.out.println("this error comes from method 1 in servicedao");
             System.out.println(e);
             e.printStackTrace();
         }
@@ -38,8 +39,7 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
     @Override
     public Service getServiceByID(int serid) {
         try{
-            PreparedStatement prepGetSer = con.prepareStatement("SELECT * FROM Service" +
-                    "WHERE ServiceID = ?");
+            PreparedStatement prepGetSer = con.prepareStatement("SELECT * FROM Service WHERE ServiceID = ?");
 
             prepGetSer.setInt(1,serid);
 
@@ -57,6 +57,7 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
 
         }
       catch(SQLException e){
+            System.out.println("this error comes from method 2 in servicedao");
         System.out.println(e);
         e.printStackTrace();
         }
@@ -74,6 +75,7 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
             delSer.executeQuery();
         }
         catch(SQLException e){
+            System.out.println("this error comes from method 3 in servicedao");
             System.out.println(e);
             e.printStackTrace();
         }

@@ -58,6 +58,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
 
         }
         catch(SQLException e){
+            System.out.println("this error comes from method 1 in packagedao");
             System.out.println(e);
             e.printStackTrace();
         }
@@ -73,6 +74,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
             preps.executeQuery();
         }
         catch(SQLException e){
+            System.out.println("this error comes from method 2 in packagedao");
             System.out.println(e);
             e.printStackTrace();
         }
@@ -88,6 +90,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
 
         }
         catch(SQLException e){
+            System.out.println("this error comes from method 3 in packagedao");
             System.out.println(e);
             e.printStackTrace();
         }
@@ -126,6 +129,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
 
         }
         catch(SQLException e){
+            System.out.println("this error comes from method 4 in packagedao");
             System.out.println(e);
             e.printStackTrace();
         }
@@ -159,7 +163,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
             }
         }
         catch(SQLException e){
-            System.out.println("This error comes from package");
+            System.out.println("this error comes from method 5 in packagedao");
             System.out.println(e);
             e.printStackTrace();
         }

@@ -36,6 +36,7 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
 
         }
         catch (SQLException e){
+            System.out.println("this error comes from method 1 in orderdao");
             System.out.println(e);
             e.printStackTrace();
         }
@@ -68,6 +69,7 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
 
         }
         catch(SQLException e){
+            System.out.println("this error comes from method 2 in orderdao");
             System.out.println(e);
             e.printStackTrace();
         }
