@@ -9,14 +9,6 @@ public class Customer {
     private Package pakket;
 
 
-    public Customer(int customerID, String companyname, int kvkNumber, String emailadress, int phonenumber) {
-        this.customerID = customerID;
-        this.companyname = companyname;
-        this.kvkNumber = kvkNumber;
-        this.emailadress = emailadress;
-        this.phonenumber = phonenumber;
-    }
-
     public Customer(int customerID, String companyname, int kvkNumber, String emailadress, int phonenumber, Package pakket) {
         this.customerID = customerID;
         this.companyname = companyname;

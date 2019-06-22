@@ -2,6 +2,7 @@ package nl.hu.ipass.project.persistance;
 
 import nl.hu.ipass.project.persistance.DaoInterfaces.OrderDao;
 import nl.hu.ipass.project.persistance.pojos.Order;
+import nl.hu.ipass.project.persistance.pojos.Package;
 import nl.hu.ipass.project.persistance.pojos.Service;
 
 import java.sql.Connection;
@@ -41,9 +42,29 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
         return null;
     }
 
-    public Order getOrdersByPackageID(int PackageId){
+    public Order getOrdersByPackageID(int id){
         try{
-            PreparedStatement state = con.prepareStatement("SELECT ");
+            PreparedStatement state = con.prepareStatement("SELECT * FROM Bestellingen WHERE PakketID = ?");
+
+            state.setInt(1,id);
+
+            ResultSet results = state.executeQuery();
+            int orderID =0;
+
+            ServiceDaoPostgressImpl addser = new ServiceDaoPostgressImpl();
+
+            ArrayList<Service> arlist = new ArrayList<>();
+
+            while(results.next())//noinspection duplicate
+                 {
+                orderID = results.getInt("BestellingID");
+               int serviceID = results.getInt("ServiceID");
+               Service ser = addser.getServiceByID(serviceID);
+               arlist.add(ser);
+            }
+
+            Order temp = new Order(orderID,arlist);
+            return temp;
 
         }
         catch(SQLException e){

@@ -2,11 +2,30 @@ package nl.hu.ipass.project.persistance;
 
 
 import nl.hu.ipass.project.persistance.DaoInterfaces.PackageDao;
+import nl.hu.ipass.project.persistance.pojos.Order;
+import nl.hu.ipass.project.persistance.pojos.Package;
+import nl.hu.ipass.project.persistance.pojos.Service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+
+/*
+*
+*
+* TODO:
+* save me pls pepe  https://i.kym-cdn.com/entries/icons/original/000/025/382/Screen_Shot_2018-02-06_at_3.37.14_PM.png
+*
+* very serious comment btw
+*
+*
+* I'm so bored please save me.
+*
+*
+* */
 
 public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDao {
     private Connection con = getConnection();
@@ -17,17 +36,24 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
             PreparedStatement getPackID = con.prepareStatement("SELECT * FROM Pakket" +
                     "WHERE PakketID = ?");
 
-            getPackID.setInt(1,id);\
+            getPackID.setInt(1,id);
 
             ResultSet rs = getPackID.executeQuery();
 
-            if(rs.next()) {
-              int id =  rs.getInt("PakketID");
+            OrderDaoPostgressImpl orderdao = new OrderDaoPostgressImpl();
+
+            if(rs.next()) //noinspection Duplicates
+                 {
+              int idp =  rs.getInt("PakketID");
               String pakketnaam = rs.getString("Pakketnaam");
               int Pakketprijs =  rs.getInt("Pakketprijs");
+              ArrayList<Order> orders = new ArrayList<>();
+
+              orders.add(orderdao.getOrdersByPackageID(idp));
 
 
-                Package pack = new Package(id,pakketnaam,Pakketprijs);
+              Package pack = new Package(idp,pakketnaam,Pakketprijs,orders);
+              return pack;
             }
 
         }
@@ -35,11 +61,17 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
             System.out.println(e);
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
     public void deletePackagebyID(int id) {
-        try{}
+        try{
+            PreparedStatement preps = con.prepareStatement("DELETE FROM Pakket" +
+                    "WHERE PakketID = ?");
+            preps.setInt(1,id);
+            preps.executeQuery();
+        }
         catch(SQLException e){
             System.out.println(e);
             e.printStackTrace();
@@ -48,8 +80,13 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
     }
 
     @Override
-    public void removeOrderbyId(int id) {
-        try{}
+    public void removeOrderbyId(Package pakket,int id) {
+        try{
+            PreparedStatement preps = con.prepareStatement("DELETE FROM bestellingen" +
+                    "WHERE BestellingID = ?");
+            preps.executeQuery();
+
+        }
         catch(SQLException e){
             System.out.println(e);
             e.printStackTrace();
@@ -58,8 +95,36 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
     }
 
     @Override
-    public void addOrderByID(int id) {
-        try{}
+    public void addOrderByID(Package pakket,int id) {
+        try{
+            PreparedStatement preps = con.prepareStatement("SELECT * FROM Bestellingen" +
+                    "WHERE BestellingID = ?");
+
+            int orderID = 0;
+
+            preps.setInt(1,id);
+
+            ResultSet res = preps.executeQuery();
+
+            ArrayList<Service> services = new ArrayList<>();
+
+            ServiceDaoPostgressImpl serDao = new ServiceDaoPostgressImpl();
+
+            while (res.next())//noinspection Duplicates
+            {
+                orderID = res.getInt("BestellingID");
+                int serviceID = res.getInt("ServiceID");
+
+                Service temp = serDao.getServiceByID(serviceID);
+
+                services.add(temp);
+
+            }
+            Order order = new Order(orderID,services);
+            pakket.addOrder(order);
+
+
+        }
         catch(SQLException e){
             System.out.println(e);
             e.printStackTrace();
@@ -68,9 +133,33 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
     }
 
     @Override
-    public Package getPackageByCustomerID(int id) {
-        try{}
+    public Package getPackageByCustomerID(int id){
+
+        try{
+            PreparedStatement preps = con.prepareStatement("SELECT * FROM pakket WHERE Klantnummer = ?");
+            preps.setInt(1,id);
+
+            ResultSet item = preps.executeQuery();
+
+            OrderDaoPostgressImpl orderdao = new OrderDaoPostgressImpl();
+
+
+            if(item.next())//noinspection Duplicates
+                 {
+                int idp = item.getInt("PakketID");
+                int customer = item.getInt("Klantnummer");
+                String name = item.getString("Pakketnaam");
+                int price = item.getInt("Pakketprijs");
+
+                ArrayList<Order> orders = new ArrayList<>();
+
+                orders.add(orderdao.getOrdersByPackageID(id));
+
+                return new Package(idp,name,price,orders);
+            }
+        }
         catch(SQLException e){
+            System.out.println("This error comes from package");
             System.out.println(e);
             e.printStackTrace();
         }

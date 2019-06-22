@@ -1,5 +1,7 @@
 package nl.hu.ipass.project.persistance.pojos;
 
+import nl.hu.ipass.project.persistance.pojos.Order;
+
 import java.util.ArrayList;
 
 public class Package {
@@ -27,6 +29,8 @@ public class Package {
     public void setOrders(ArrayList<Order> orders) {
         this.orders = orders;
     }
+
+    public void removeOrder(Order order){orders.remove(order);}
 
     public int getPackageID() {
         return packageID;

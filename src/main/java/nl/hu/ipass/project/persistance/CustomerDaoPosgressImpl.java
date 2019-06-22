@@ -2,6 +2,7 @@ package nl.hu.ipass.project.persistance;
 
 import nl.hu.ipass.project.persistance.DaoInterfaces.CustomerDao;
 import nl.hu.ipass.project.persistance.pojos.Customer;
+import nl.hu.ipass.project.persistance.pojos.Package;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,6 +39,9 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
 
             ResultSet customers = getCust.executeQuery("select * from klant");
 
+            PackageDaoPosgressImpl packagedao = new PackageDaoPosgressImpl();
+
+
             while (customers.next()) {
                 int id = customers.getInt("Klantnummer");
                 String name = customers.getString("Bedrijfsnaam");
@@ -45,12 +49,15 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
                 String email = customers.getString("Emailadress");
                 int phNum = customers.getInt("TelefoonNummer");
 
-                Customer tempCust = new Customer(id, name, kvknum, email, phNum);
+                Package pakket = packagedao.getPackageByCustomerID(id);
+
+                Customer tempCust = new Customer(id, name, kvknum, email, phNum,pakket);
                 allCustomers.add(tempCust);
             }
             return allCustomers;
         }
         catch (SQLException e){
+            System.out.println("this error comes from customerdao");
             e.printStackTrace();
             System.out.println(e);
         }
