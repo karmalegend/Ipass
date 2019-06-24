@@ -22,6 +22,25 @@ var path;
 * CURRENTLY ONLY A MOCK-UP!
 * */
 
+
+
+function getData(){
+    let fetchoptions = {
+        method: 'GET',
+        headers : {
+            'Authorization' : 'Bearer' + window.sessionStorage.getItem("myJWT")
+        }
+
+    }
+    
+    fetch("/restservices/customer/all", fetchoptions)
+    .then((response) => response.json())
+    .then((parsedResponse) =>{
+        console.log(parsedResponse)
+    });
+}
+
+
 function edit(event){
     console.log(event);
 
@@ -124,3 +143,5 @@ function editEvent(){
 }
 
 document.querySelector(".edit").addEventListener("click",edit);
+
+getData();
