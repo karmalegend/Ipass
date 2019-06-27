@@ -2,6 +2,7 @@ package nl.hu.ipass.project.persistance;
 
 
 import nl.hu.ipass.project.persistance.DaoInterfaces.PackageDao;
+import nl.hu.ipass.project.persistance.pojos.Customer;
 import nl.hu.ipass.project.persistance.pojos.Order;
 import nl.hu.ipass.project.persistance.pojos.Package;
 import nl.hu.ipass.project.persistance.pojos.Service;
@@ -168,5 +169,29 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
             e.printStackTrace();
         }
         return null;
+    }
+
+
+//    TODO : addPackage function
+
+    @Override
+    public boolean addPackage(Package pakket, Customer klant) {
+        try{
+            PreparedStatement preps = con.prepareStatement("INSERT INTO pakket(pakketid,klantnummer,pakketnaam,pakketprijs) VALUES(?,?,?,?)");
+            preps.setInt(1,pakket.getPackageID());
+            preps.setInt(2,klant.getCustomerID());
+            preps.setString(3,pakket.getPackageName());
+            preps.setInt(4,pakket.getPagckagePrice());
+
+            preps.executeUpdate();
+            return true;
+
+        }
+        catch(SQLException e){
+            System.out.println("This error comes from method 6 in packagedao");
+            System.out.println(e);
+            e.printStackTrace();
+            return false;
+        }
     }
 }

@@ -43,6 +43,26 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
         return null;
     }
 
+    @Override
+    public boolean addOrder(Package pakket, Service service, Order order) {
+        try{
+            PreparedStatement preps = con.prepareStatement("INSERT INTO bestellingen(bestellingid,serviceid,pakketid) VALUES(?,?,?)");
+            preps.setInt(1,order.getOrderID());
+            preps.setInt(2,service.getServiceID());
+            preps.setInt(3,pakket.getPackageID());
+
+            preps.executeUpdate();
+            return true;
+
+        }
+        catch (SQLException e){
+            System.out.println("this error comes from method 2 in orderdao");
+            System.out.println(e);
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public Order getOrdersByPackageID(int id){
         try{
             PreparedStatement state = con.prepareStatement("SELECT * FROM Bestellingen WHERE PakketID = ?");
@@ -69,7 +89,7 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
 
         }
         catch(SQLException e){
-            System.out.println("this error comes from method 2 in orderdao");
+            System.out.println("this error comes from method 3 in orderdao");
             System.out.println(e);
             e.printStackTrace();
         }

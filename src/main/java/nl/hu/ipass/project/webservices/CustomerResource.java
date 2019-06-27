@@ -2,10 +2,13 @@ package nl.hu.ipass.project.webservices;
 
 
 import nl.hu.ipass.project.persistance.CustomerDaoPosgressImpl;
+import nl.hu.ipass.project.persistance.OrderDaoPostgressImpl;
+import nl.hu.ipass.project.persistance.PackageDaoPosgressImpl;
 import nl.hu.ipass.project.persistance.ServiceDaoPostgressImpl;
 import nl.hu.ipass.project.persistance.pojos.Customer;
 import nl.hu.ipass.project.persistance.pojos.Order;
 import nl.hu.ipass.project.persistance.pojos.Service;
+import nl.hu.ipass.project.persistance.pojos.Package;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
@@ -41,6 +44,12 @@ public class CustomerResource {
 
     }
 
+    /*
+    *
+    * This function adds a new customer to the database using the formdata provided
+    * It does this by using the POST request.
+    *
+    * */
 
     @POST
     @RolesAllowed("admin")
@@ -50,6 +59,7 @@ public class CustomerResource {
                                    @FormParam("kvknum") int kvkNumber,
                                    @FormParam("email") String email,
                                    @FormParam("phonenumber") int phonenumber,
+                                   @FormParam("packageID") int packageID,
                                    @FormParam("packagename") String packageName,
                                    @FormParam("price") int packagePrice,
                                    @FormParam("orderID") int orderID,
@@ -91,25 +101,29 @@ public class CustomerResource {
 
         Order order = new Order(orderID,services);
 
-        //TODO: get packageID from front-end means storing it in localstorage and giving it the same treatment as package / customer ID
+        ArrayList<Order> orders = new ArrayList<>();
 
-        Package packagee = new Package();
+        orders.add(order);
+
+        System.out.println(order);
+
+        CustomerDaoPosgressImpl custdao = new CustomerDaoPosgressImpl();
+        PackageDaoPosgressImpl packdao = new PackageDaoPosgressImpl();
+        OrderDaoPostgressImpl orderdao = new OrderDaoPostgressImpl();
 
 
-        System.out.println(customerID);
-        System.out.println(companyName);
-        System.out.println(kvkNumber);
-        System.out.println(email);
-        System.out.println(phonenumber);
-        System.out.println(packageName);
-        System.out.println(packagePrice);
-        System.out.println(orderID);
-        System.out.println(service1);
-        System.out.println(service2);
-        System.out.println(service3);
-        System.out.println(service4);
-        System.out.println(service5);
-        System.out.println(service6);
+        Package pakket = new Package(packageID,packageName,packagePrice,orders);
+
+        Customer customer = new Customer(customerID,companyName,kvkNumber,email,phonenumber,pakket);
+
+        custdao.addCustomer(customer);
+        packdao.addPackage(pakket,customer);
+
+        for (int i = 0; i < services.size();i++){
+            orderdao.addOrder(pakket,services.get(i),order);
+        }
+
+
         return Response.ok().build();
 
     }

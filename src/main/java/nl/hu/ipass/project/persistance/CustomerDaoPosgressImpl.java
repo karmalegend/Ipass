@@ -169,10 +169,9 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
     }
 
     @Override
-    public void addCustomer(Customer customer) {
+    public boolean addCustomer(Customer customer) {
         try{
-            PreparedStatement prepAddCus = con.prepareStatement("INSERT INTO Klant(Klantnummer,Bedrijfsnaam,KvKnummer,Emailadress,Telefoonnummer)" +
-                    "VALUES(?,?,?,?,?)");
+            PreparedStatement prepAddCus = con.prepareStatement("INSERT INTO Klant(Klantnummer,Bedrijfsnaam,KvKnummer,Emailadress,Telefoonnummer) VALUES(?,?,?,?,?)");
 
             prepAddCus.setInt(1,customer.getCustomerID());
             prepAddCus.setString(2,customer.getCompanyname());
@@ -180,13 +179,16 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
             prepAddCus.setString(4,customer.getEmailadress());
             prepAddCus.setInt(5,customer.getPhonenumber());
 
-            prepAddCus.executeQuery();
+            prepAddCus.executeUpdate();
+
+            return true;
 
         }
         catch(SQLException e){
             System.out.println("this error comes from method 5 in customerdao");
             System.out.println(e);
             e.printStackTrace();
+            return false;
         }
     }
 }

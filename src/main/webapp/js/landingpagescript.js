@@ -209,6 +209,7 @@ function renderCustomer(customer){
 
     localStorage.setItem("orderID",customer.pakket.orders[0].orderID+1);
     localStorage.setItem("customerID",customer.customerID+1);
+    localStorage.setItem("packageID",customer.pakket.packageID+1);
 
 
 }
@@ -272,14 +273,19 @@ function addCustomer(event){
     </div>
 
     <div class="form-row">
-      <div class="form-group col-md-3">
+      <div class="form-group col-md-2">
         <label>Emailadress</label>
         <input class="form-control" type="email" placeholder="kpn@kpn.nl" name="email"/>
       </div>
       
-      <div class="form-group col-md-3">
+      <div class="form-group col-md-2">
         <label>Telefoonnummer</label>
         <input class="form-control" type="number" placeholder="08000402" name="phonenumber"/>
+      </div>
+
+      <div class="form-group col-md-2">
+        <label>PackageID</label>
+        <input class="form-control" type="number" value=${localStorage.getItem("packageID")} name="packageID" readonly="readonly"/>
       </div>
       
       <div class="form-group col-md-3">
