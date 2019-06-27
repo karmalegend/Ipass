@@ -113,18 +113,22 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
     * check query need to either delete references aswell or add an on delete cascade.
     * */
     @Override
-    public void deleteCustomerbyId(int id) {
+    public boolean deleteCustomerbyId(int id) {
         try {
-            PreparedStatement prepDel = con.prepareStatement("DELETE FROM Klant" +
-                    "WHERE Klantnummer = ?");
+            PreparedStatement prepDel = con.prepareStatement("DELETE FROM Klant WHERE Klantnummer = ?");
 
             prepDel.setInt(1, id);
+
+            prepDel.executeUpdate();
             System.out.println("User with ID " + id + "succesfully deleted");
+
+            return true;
         }
         catch (SQLException e){
             System.out.println("this error comes from method 3 in customerdao");
             System.out.println(e);
             e.printStackTrace();
+            return false;
         }
 
     }

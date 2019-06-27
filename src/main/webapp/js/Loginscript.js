@@ -14,7 +14,16 @@ function login(event){
             console.log("test 1.5");
             console.log("things");
         })
-    .catch(error => console.log(error));
+    .catch(function(error){
+        var node = document.createElement("P");
+        node.className = "loginError";
+        var textnode = document.createTextNode(error);
+        
+        node.appendChild(textnode);
+
+        document.getElementById("WindStyle").appendChild(node);
+    });
+
 }
 
 document.querySelector("#Login").addEventListener("click",login);

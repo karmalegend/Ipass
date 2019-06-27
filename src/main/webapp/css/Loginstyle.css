@@ -82,3 +82,11 @@ footer {
     float: right;
     margin: 5px;
 }
+
+.loginError{
+    text-align: center;
+    background: red;
+    padding: 2px;
+    color: white;
+    margin-top: 10px;
+}

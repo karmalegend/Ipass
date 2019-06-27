@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public interface CustomerDao {
     ArrayList<Customer> getAllCustomers();
     void updateCustomer(Customer customer);
-    void deleteCustomerbyId(int id);
+    boolean deleteCustomerbyId(int id);
     void updateEmailbyID(int id, String email);
     void addCustomer(Customer customer);
 }
