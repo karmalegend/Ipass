@@ -37,7 +37,7 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
 
             Statement getCust = con.createStatement();
 
-            ResultSet customers = getCust.executeQuery("select * from klant");
+            ResultSet customers = getCust.executeQuery("select * from klant ORDER BY klantnummer ASC");
 
             PackageDaoPosgressImpl packagedao = new PackageDaoPosgressImpl();
 
@@ -191,6 +191,29 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
             return false;
         }
     }
+
+    public boolean updateCustomerInfo(String name, String email, int phone, int id) {
+        try {
+            PreparedStatement prepUpdateCus = con.prepareStatement("UPDATE Klant SET bedrijfsnaam = ?, emailadress = ?, telefoonnummer = ? WHERE klantnummer = ?");
+
+            prepUpdateCus.setString(1,name);
+            prepUpdateCus.setString(2,email);
+            prepUpdateCus.setInt(3,phone);
+            prepUpdateCus.setInt(4,id);
+
+            prepUpdateCus.executeUpdate();
+
+            return true;
+
+        } catch (SQLException e) {
+            System.out.println("this error comes from method 5 in customerdao");
+            System.out.println(e);
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }
 
 

@@ -1,29 +1,12 @@
-// var oldName;
-// var infoArray;
-// var oldPackage;
-// var oldPayment;
-// var oldServicesArray;
-// var path;
+var customername;
+var customerEmail;
+var customerPhone;
 
-/*
-* 
-* TODO: MAKE THEM DYNAMIC!
-* make all selections based on event.
-* rather than queryselector.
-*  
-* */
-
-
-/*
-* TODO:
-* 
-* Still need to add save functionality and communication to back-end;
-* 
-* CURRENTLY ONLY A MOCK-UP!
-* */
-
-
-
+//this function is the initial load function fo the webpage it fetches all the data
+// and parsaes it into a json format.
+// If the user does not have the correct permissions to acces the fetch
+// They are not allowed to be on the current page
+// And will get redirected to the login page.
 function getData(){
     let fetchoptions = {
         method: 'GET',
@@ -44,23 +27,21 @@ function getData(){
     });
 }
 
-
-function initialLoadIn(response){
-    console.log("This is the initialLoadIn function with response ");
-    console.log(response);
-    
+// This function calls the render function for every
+// Customer in the array
+function initialLoadIn(response){    
     for(var i = 0; i<response.length; i++){
         renderCustomer(response[i]);
     }
 }
 
 
-//in hinesight i should've just made 1 var for <div> and <p> rather than create a new one everytime.
-
+//in hindsight i should've just made 1 var for <div> and <p> rather than create a new one everytime.
+// This is a massive function that creates
+// The elements needed for the customer
+// It renders a row and puts all the needed info in there.
 function renderCustomer(customer){
-    console.log(customer);
     //append all this to div class = container to add it to body
-    console.log("running function render customer");
 
     var row = document.createElement("div");
     row.className = "row";
@@ -88,9 +69,12 @@ function renderCustomer(customer){
     var customerNameP = document.createElement("P");
     var customerNamePTextNode = document.createTextNode(customer.companyname);
 
+    //customerID
     var customerIdP = document.createElement("P");
     customerIdP.textContent = customer.customerID;
 
+
+    //add it all to the row
     customerNameP.appendChild(customerNamePTextNode);
     customerName.appendChild(customerNameP);
     customerName.appendChild(customerIdP);
@@ -103,9 +87,13 @@ function renderCustomer(customer){
     var customerPackageP = document.createElement("P");
     var customerPackagePTextNode = document.createTextNode(customer.pakket.packageName);
 
+
+    //package ID
     var customerPackageIdP = document.createElement("P");
     customerPackageIdP.textContent = customer.pakket.packageID;
 
+
+    //add it all to the row
     customerPackageP.appendChild(customerPackagePTextNode);
     customerPackage.appendChild(customerPackageP);
     customerPackage.appendChild(customerPackageIdP);
@@ -118,8 +106,16 @@ function renderCustomer(customer){
     var packagePriceP = document.createElement("P");
     var packagePricePTextNode = document.createTextNode(customer.pakket.pagckagePrice);
 
+
+    //order id
+    let cusOrderId = document.createElement("p");
+    cusOrderId.textContent = customer.pakket.orders[0].orderID;
+
+
+    //add it all to the row
     packagePriceP.appendChild(packagePricePTextNode);
     packagePrice.appendChild(packagePriceP);
+    packagePrice.appendChild(cusOrderId);
     customerRow.append(packagePrice);
 
 
@@ -134,17 +130,23 @@ function renderCustomer(customer){
     var customerInfo = document.createElement("div");
     customerInfo.className = "customerInfo";
 
+
+    //customerEmail
     var customerInfoP = document.createElement("p");
     customerInfoPTextNode = document.createTextNode(customer.emailadress);
     
+
+    //add to row
     customerInfoP.appendChild(customerInfoPTextNode);
     customerInfo.appendChild(customerInfoP);
 
 
+    //customerphone number
     var customerInfoP1 = document.createElement("p");
     customerInfoP1TextNode = document.createTextNode(customer.phonenumber);
 
-    
+
+    //add to row
     customerInfoP1.appendChild(customerInfoP1TextNode);
     customerInfo.appendChild(customerInfoP1);
 
@@ -155,6 +157,9 @@ function renderCustomer(customer){
     var customerServices = document.createElement("div");
     customerServices.className= "customerServices";
     var ul = document.createElement("ul");
+    ul.id = `ul${customer.customerID}`;
+
+    //make a LI element for every service in the package
 
     for(var i = 0; i<customer.pakket.orders[0].services.length; i++){
         var li = document.createElement("li");
@@ -164,6 +169,12 @@ function renderCustomer(customer){
         ul.appendChild(li);
     }
 
+
+    //icon to add a service.
+    let addFavicon = document.createElement("i");
+    addFavicon.className = "fas fa-plus";
+
+    ul.appendChild(addFavicon);
     customerServices.appendChild(ul);
     customerRow.appendChild(customerServices);
 
@@ -180,6 +191,8 @@ function renderCustomer(customer){
     editButton.className = "btn btn-info edit";
     editButton.textContent = "Edit";
     
+
+    //add it all to the row
     customerButtons.appendChild(delButton);
     customerButtons.appendChild(editButton);
     customerRow.appendChild(customerButtons);
@@ -195,8 +208,11 @@ function renderCustomer(customer){
 
     arrlistEditButtons = document.querySelectorAll(".edit")
 
-    console.log(arrlistEditButtons);
 
+
+    //add button functionalities
+    //this is not the most efficient way probably
+    // but it does the job
     for(var j = 0; j<arrlistEditButtons.length; j++){
         arrlistEditButtons[j].addEventListener("click",edit);
     }
@@ -207,12 +223,128 @@ function renderCustomer(customer){
         arlistDelButtons[l].addEventListener("click",deleteCus);
     }
 
+
+    arrListAddServiceButtons = document.querySelectorAll("i");
+    for(var l=0; l<arrListAddServiceButtons.length; l++){
+      arrListAddServiceButtons[l].addEventListener("click",addService);
+    }
+
+
+    //set localstorage variables for when
+    //adding a new customer
     localStorage.setItem("orderID",customer.pakket.orders[0].orderID+1);
     localStorage.setItem("customerID",customer.customerID+1);
     localStorage.setItem("packageID",customer.pakket.packageID+1);
 
 
 }
+
+
+//add an EXISTING service to a customer
+//if the serviceID does not match any existing
+//service the function will alert an error.
+
+function addService(event){
+  let cusId = event.path[3].childNodes[0].childNodes[1].textContent;
+  let ul = document.querySelector(`#ul${cusId}`);
+  let input = document.createElement("input");
+  input.setAttribute("type","number");
+  input.setAttribute("placeholder","ONLY SERVICE ID'S");
+
+  let iarray = document.querySelectorAll("i");
+
+  //hide all the add service buttons to prevent user from bugging out the system.
+  for(let i =0; i<iarray.length; i++){
+      iarray[i].style.visibility = "hidden";
+    }
+
+
+  //create button to fetch data
+  let li = document.createElement("li");
+  li.innerHTML = `<button type="button" class="btn btn-light" id="addServiceButton">Add</button>`;
+
+  ul.appendChild(li);
+  ul.insertBefore(input,ul.childNodes[event.path[1].childElementCount-1]);
+
+  addServiceEventListener();
+}
+
+
+//add event listener to the add service button
+function addServiceEventListener(){
+  document.querySelector("#addServiceButton").addEventListener("click",addServiceEventHandler);
+}
+
+
+//handle the event.
+//this function gets all the data from the parent divs
+//then checks if the service is available 
+//and asks the user if it's the correct service
+//if the user confirms it sends a POST request to the backend
+//to add the service to the customers order.
+function addServiceEventHandler(event){
+  let formData = new FormData();
+  let serviceID = event.path[2].childNodes[4].value;
+  let packageID = event.path[4].childNodes[1].children[1].textContent;
+  let orderID = event.path[4].childNodes[2].childNodes[1].textContent;
+
+  formData.append("serviceID",serviceID);
+  formData.append("packageID",packageID);
+  formData.append("orderID",orderID);
+
+  let encData = new URLSearchParams(formData.entries());
+  
+  let fetchoptions = {
+    method: 'POST',
+    headers : {
+        'Authorization' : 'Bearer ' + window.sessionStorage.getItem("myJWT")
+    },
+    body : encData
+  };
+
+  let fetchoptionsGet = {
+    method: 'GET',
+    headers : {
+        'Authorization' : 'Bearer ' + window.sessionStorage.getItem("myJWT")
+    }
+  };
+
+
+  if(serviceID > 8){
+    alert("Ongeldig service ID");
+  }
+  else{
+
+    //first fetch the service to ask user
+    //if the ID matches what they wanted to do.
+    fetch("restservices/service/get/"+serviceID,fetchoptionsGet)
+    .then(response => response.json())
+    .then(function(response){
+      console.log(response);
+      let cfbox = confirm(`Are you sure you want to add: "${response.serviceName}". \nWith the following description: "${response.serviceDienst}" to this customer?`);
+      
+      //if user confirms and all goes well service is added
+      if(cfbox){
+        fetch("restservices/service", fetchoptions)
+        .then(function(response){
+          if(response.ok){
+            location.reload();
+          }
+          //if all doesn't go well, alert the user something has gone wrong
+          //and they either need to try again or take a step back
+          //and try later
+          //if issue remains unresolved
+          //contact system admin
+          else{
+            alert("Something went wrong while processing your request please try again later, or contact your system admin.")
+          }
+        });
+      }
+    });
+    
+  }
+}
+
 
 
 function deleteCus(event){
@@ -242,10 +374,6 @@ function deleteCus(event){
             else console.log("cannot delete customer");
     })
     }
-
-    
-    console.log("detele button");
-    console.log(event);
 }
 
 
@@ -360,15 +488,151 @@ function saveCustomerFunction(event){
 
 
     fetch("restservices/customer", fetchoptions)
-    console.log(encData);
-    console.log("save customer clicked");
-    console.log(event);
+    .then(response => response.json())
+    .then(function(response){
+      renderCustomer(response);
+      cancelCustomerFunction();
+    });
 }
 
 
 function edit(event){
+    customername = event.path[2].childNodes[0].childNodes[0].textContent;
+    customerEmail = event.path[2].childNodes[4].childNodes[0].textContent;
+    customerPhone = event.path[2].childNodes[4].childNodes[1].textContent;
+
+    if(customerPhone.length == 5){
+      customerPhone = event.path[2].childNodes[4].childNodes[2].textContent;
+      // path[2].childNodes[4].childNodes[2]
+    }
+
+
+    console.log(event.path[2].childNodes[4].childNodes[1].length);
+    console.log(event.path[2].childNodes[4].childNodes[1].textContent);
+    console.log(customerPhone);
+
+    event.path[2].childNodes[0].childNodes[0].innerHTML = `
+      <form id="customerName">
+        <input id="nameCus" type="text" placeholder="test" value="${customername}" name="customerName"/>
+      </form>`;
+
+
+    event.path[2].childNodes[4].innerHTML = `
+      <form id="customerContact">
+        <input id="email" type="email" placeholder="test" value="${customerEmail}" name="customerEmail"/>
+        <br/>
+        <input id="phone" type="phone" placeholder="testeserasdd" value="${customerPhone}" name="customerPhone"/>
+      </form>`;
+
+
+      event.path[1].innerHTML = `
+      <button type="button" class="btn btn-danger cancel">Cancel</button>
+      <button type="button" class="btn btn-info save">Save</button>
+      ` 
+        
     console.log("Edit button");
     console.log(event);
+
+    cancelEventListener();
+    saveEventListener();
+}
+
+function saveEventListener(){
+  document.querySelector(".save").addEventListener("click",saveEventHandler);
+}
+
+
+function saveEventHandler(event){
+  let formData = new FormData(document.querySelector("#customerName"),document.querySelector("#customerContact"));
+  
+  let name = document.querySelector("#nameCus").value;
+  let email = document.querySelector("#email").value;
+  let phone = document.querySelector("#phone").value;
+
+  formData.append("customerEmail",email);
+  
+  formData.append("customerPhone",phone);
+
+  formData.append("customerID",event.path[2].childNodes[0].childNodes[1].textContent);
+  
+  
+  let encData = new URLSearchParams(formData.entries());
+
+  let fetchoptions = {
+    method: 'PUT',
+    headers : {
+        'Authorization' : 'Bearer ' + window.sessionStorage.getItem("myJWT")
+    },
+    body : encData
+};
+
+fetch("restservices/customer", fetchoptions)
+.then(function(response){
+  if(response.ok){
+    event.path[2].childNodes[0].childNodes[0].innerHTML = `<p>${name}</p>`;
+    event.path[2].childNodes[4].innerHTML = `<p>${email}</p>
+    <p>${phone}</p>`;
+  
+  event.path[1].innerHTML = `
+    <button type="button" class="btn btn-danger delete">Delete</button>
+    <button type="button" class="btn btn-info edit">Edit</button>` 
+  }
+
+  arrlistEditButtons = document.querySelectorAll(".edit")
+
+
+  for(var j = 0; j<arrlistEditButtons.length; j++){
+      arrlistEditButtons[j].addEventListener("click",edit);
+  }
+
+  arlistDelButtons = document.querySelectorAll(".delete")
+
+  for(var l=0; l<arlistDelButtons.length; l++){
+      arlistDelButtons[l].addEventListener("click",deleteCus);
+  }
+})
+
+}
+
+
+function cancelEventListener(){
+  console.log("stuff");
+  document.querySelector(".cancel").addEventListener("click",cancelEventHandler);
+}
+
+
+function cancelEventHandler(event){
+
+  console.log(customerPhone);
+  event.path[2].childNodes[0].childNodes[0].innerHTML = `<p>${customername}</p>`;
+  event.path[2].childNodes[4].innerHTML = `<p>${customerEmail}</p>
+  <p>${customerPhone}</p>`;
+  
+
+  event.path[1].innerHTML = `
+  <button type="button" class="btn btn-danger delete">Delete</button>
+  <button type="button" class="btn btn-info edit">Edit</button>
+  ` 
+
+
+  arrlistEditButtons = document.querySelectorAll(".edit")
+
+
+  for(var j = 0; j<arrlistEditButtons.length; j++){
+      arrlistEditButtons[j].addEventListener("click",edit);
+  }
+
+  arlistDelButtons = document.querySelectorAll(".delete")
+
+  for(var l=0; l<arlistDelButtons.length; l++){
+      arlistDelButtons[l].addEventListener("click",deleteCus);
+  }
+
+
+  console.log(event);
+  console.log("other stuff");
+  console.log("name" + customername + "email" + customerEmail + "phone" + customerPhone);
+
 }
 
 

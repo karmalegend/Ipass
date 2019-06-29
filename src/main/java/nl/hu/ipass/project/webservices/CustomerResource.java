@@ -124,8 +124,26 @@ public class CustomerResource {
         }
 
 
-        return Response.ok().build();
+        return Response.ok(customer).build();
 
+    }
+
+    @PUT
+    @RolesAllowed("admin")
+    @Produces("application/json")
+    public Response editCustomer(@FormParam("customerName") String name,
+                                 @FormParam("customerEmail") String email,
+                                 @FormParam("customerPhone") int phoneNumber,
+                                 @FormParam("customerID") int customerID){
+
+        CustomerDaoPosgressImpl custdao = new CustomerDaoPosgressImpl();
+
+        System.out.println(name + "," + email + "," + phoneNumber + "," + customerID);
+
+        if(!custdao.updateCustomerInfo(name,email,phoneNumber,customerID)){
+            return Response.status(404).build();
+        }
+        return Response.ok().build();
     }
 
 

@@ -10,4 +10,5 @@ public interface CustomerDao {
     boolean deleteCustomerbyId(int id);
     void updateEmailbyID(int id, String email);
     boolean addCustomer(Customer customer);
+    boolean updateCustomerInfo(String name, String email, int phone, int id);
 }
