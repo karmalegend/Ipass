@@ -5,10 +5,10 @@ import nl.hu.ipass.project.persistance.CustomerDaoPosgressImpl;
 import nl.hu.ipass.project.persistance.OrderDaoPostgressImpl;
 import nl.hu.ipass.project.persistance.PackageDaoPosgressImpl;
 import nl.hu.ipass.project.persistance.ServiceDaoPostgressImpl;
-import nl.hu.ipass.project.persistance.pojos.Customer;
-import nl.hu.ipass.project.persistance.pojos.Order;
-import nl.hu.ipass.project.persistance.pojos.Service;
-import nl.hu.ipass.project.persistance.pojos.Package;
+import nl.hu.ipass.project.domein.Customer;
+import nl.hu.ipass.project.domein.Order;
+import nl.hu.ipass.project.domein.Service;
+import nl.hu.ipass.project.domein.Package;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;

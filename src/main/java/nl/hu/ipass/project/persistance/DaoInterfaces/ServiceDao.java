@@ -1,6 +1,6 @@
 package nl.hu.ipass.project.persistance.DaoInterfaces;
 
-import nl.hu.ipass.project.persistance.pojos.Service;
+import nl.hu.ipass.project.domein.Service;
 
 import java.util.ArrayList;
 

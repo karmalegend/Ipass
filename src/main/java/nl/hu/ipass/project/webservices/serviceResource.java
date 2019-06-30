@@ -2,7 +2,7 @@ package nl.hu.ipass.project.webservices;
 
 import nl.hu.ipass.project.persistance.OrderDaoPostgressImpl;
 import nl.hu.ipass.project.persistance.ServiceDaoPostgressImpl;
-import nl.hu.ipass.project.persistance.pojos.Service;
+import nl.hu.ipass.project.domein.Service;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;

@@ -1,7 +1,7 @@
 package nl.hu.ipass.project.persistance;
 
 import nl.hu.ipass.project.persistance.DaoInterfaces.ServiceDao;
-import nl.hu.ipass.project.persistance.pojos.Service;
+import nl.hu.ipass.project.domein.Service;
 
 import java.sql.*;
 import java.util.ArrayList;

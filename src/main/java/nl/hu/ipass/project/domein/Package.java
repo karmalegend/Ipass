@@ -1,6 +1,4 @@
-package nl.hu.ipass.project.persistance.pojos;
-
-import nl.hu.ipass.project.persistance.pojos.Order;
+package nl.hu.ipass.project.domein;
 
 import java.util.ArrayList;
 

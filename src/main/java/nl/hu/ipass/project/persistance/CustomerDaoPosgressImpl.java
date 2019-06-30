@@ -1,8 +1,8 @@
 package nl.hu.ipass.project.persistance;
 
 import nl.hu.ipass.project.persistance.DaoInterfaces.CustomerDao;
-import nl.hu.ipass.project.persistance.pojos.Customer;
-import nl.hu.ipass.project.persistance.pojos.Package;
+import nl.hu.ipass.project.domein.Customer;
+import nl.hu.ipass.project.domein.Package;
 
 import java.sql.*;
 import java.util.ArrayList;

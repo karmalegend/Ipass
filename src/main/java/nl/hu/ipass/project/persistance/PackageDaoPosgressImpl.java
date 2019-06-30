@@ -2,10 +2,10 @@ package nl.hu.ipass.project.persistance;
 
 
 import nl.hu.ipass.project.persistance.DaoInterfaces.PackageDao;
-import nl.hu.ipass.project.persistance.pojos.Customer;
-import nl.hu.ipass.project.persistance.pojos.Order;
-import nl.hu.ipass.project.persistance.pojos.Package;
-import nl.hu.ipass.project.persistance.pojos.Service;
+import nl.hu.ipass.project.domein.Customer;
+import nl.hu.ipass.project.domein.Order;
+import nl.hu.ipass.project.domein.Package;
+import nl.hu.ipass.project.domein.Service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

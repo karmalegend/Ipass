@@ -1,4 +1,4 @@
-package nl.hu.ipass.project.persistance.pojos;
+package nl.hu.ipass.project.domein;
 
 public class Service {
     private int serviceID;

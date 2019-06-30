@@ -1,7 +1,7 @@
 package nl.hu.ipass.project.persistance.DaoInterfaces;
 
-import nl.hu.ipass.project.persistance.pojos.Customer;
-import nl.hu.ipass.project.persistance.pojos.Package;
+import nl.hu.ipass.project.domein.Customer;
+import nl.hu.ipass.project.domein.Package;
 
 public interface PackageDao {
     Package getPackagebyID(int id);
