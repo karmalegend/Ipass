@@ -7,6 +7,7 @@ import nl.hu.ipass.project.persistance.pojos.Service;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 
 
 @Path("/service")
@@ -38,6 +39,15 @@ public class serviceResource {
         Service ser = serdao.getServiceByID(id);
         System.out.println(ser);
         return(ser);
+    }
+
+    @RolesAllowed("admin")
+    @GET
+    @Produces("application/json")
+    public ArrayList<Service> getAllServices(){
+        ServiceDaoPostgressImpl serdao = new ServiceDaoPostgressImpl();
+
+        return serdao.getAllServices();
     }
 
 }

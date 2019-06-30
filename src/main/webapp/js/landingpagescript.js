@@ -272,7 +272,7 @@ function addService(event){
 
   //create button to fetch data
   let li = document.createElement("li");
-  li.innerHTML = `<button type="button" class="btn btn-light" id="addServiceButton">Add</button>`;
+  li.innerHTML = `<button type="button" class="btn btn-dark" id="addServiceButton">Add</button>`;
 
   ul.appendChild(li);
   ul.insertBefore(input,ul.childNodes[event.path[1].childElementCount-1]);
@@ -496,14 +496,25 @@ function saveCustomerFunction(event){
       body : encData
   };
 
+  console.log(formData.get("price").length);
 
-
+  //validate userinput
+  if(formData.get("service1") > 8 || formData.get("service2") > 8 || formData.get("service3") > 8 || formData.get("service4") > 8 
+  || formData.get("service5") > 8 || formData.get("service6") > 8){
+    alert("There are no services with an ID higher than 8 please check your input")
+  }
+  else if(formData.get("price").length == 0 || formData.get("packagename").length == 0 || formData.get("phonenumber").length == 0 || 
+  formData.get("email").length == 0 || formData.get("kvknum").length == 0 || formData.get("compname").length == 0){
+    alert("Please verify your input and try again")
+  }
+  else{
     fetch("restservices/customer", fetchoptions)
     .then(response => response.json())
     .then(function(response){
       renderCustomer(response);
       cancelCustomerFunction();
     });
+  }    
 }
 
 
@@ -670,7 +681,7 @@ function editPackage(event){
     <option value="2147483646">Ultrapakket</option>
     <option value="2147483647">Dagelijks Pro</option>
   </select>
-  <button type="button" class="btn btn-light editpackageSaveButton">save</button>
+  <button type="button" class="btn btn-dark editpackageSaveButton">Save</button>
   `
 
   document.querySelector(".editpackageSaveButton").addEventListener("click", function(event){
@@ -706,10 +717,6 @@ function editPackage(event){
     
   });
 }
-
-
-
-
 
 
 getData();

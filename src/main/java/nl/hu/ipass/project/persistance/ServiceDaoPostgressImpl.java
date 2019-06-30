@@ -3,10 +3,8 @@ package nl.hu.ipass.project.persistance;
 import nl.hu.ipass.project.persistance.DaoInterfaces.ServiceDao;
 import nl.hu.ipass.project.persistance.pojos.Service;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceDao {
     private Connection con = getConnection();
@@ -80,4 +78,36 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
             e.printStackTrace();
         }
     }
+
+    @Override
+    public ArrayList<Service> getAllServices() {
+        try{
+            Statement smt = con.createStatement();
+
+            ResultSet service = smt.executeQuery("SELECT * FROM Service");
+
+            ArrayList<Service> services = new ArrayList<>();
+
+            while (service.next())//noinspection duplicate
+                 {
+                int id = service.getInt("ServiceID");
+                String servicename = service.getString("Servicenaam");
+                String servcicedienst = service.getString("servicedienst");
+                String freq = service.getString("ServiceFrequentie");
+
+                Service ser = new Service(id,servicename,servcicedienst,freq);
+                services.add(ser);
+            }
+            return services;
+
+        }
+        catch(SQLException e){
+            System.out.println("this error comes from method 4 in servicedao");
+            System.out.println(e);
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
 }

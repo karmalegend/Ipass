@@ -63,24 +63,37 @@ input[type=button]:hover{
     max-width: 200px;
 }
 
-footer {
-    background-color:#e5e5e5;
-    position: absolute;
-    left: 0;
+footer{
+    margin-top: 10px;
+    height: 50px;
+    background:#000000;
     bottom: 0;
-    height: 25px;
+    position: absolute;
     width: 100%;
-    overflow: hidden;
 }
 
-#footNote{
-    float: left;
-    margin: 5px;
+footer p{
+    font-size: 16px;
+    color: #ffffff;
+    display: inline;
 }
 
-#rightsKappa{
-    float: right;
-    margin: 5px;
+footer a{
+    margin-top: 10px;
+    margin-left: 5px;
+    font-size: 16px;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+footer a:hover{
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+body{
+    background: #4d4b52;
 }
 
 .loginError{
