@@ -10,7 +10,7 @@ function login(event){
     .then( (myJson) => {
         console.log("test 1.25");
             window.sessionStorage.setItem("myJWT", myJson.JWT);
-            window.location.href = "http://localhost:8080/LandingPage.html";
+            window.location.href = "/LandingPage.html";
             console.log("test 1.5");
             console.log("things");
         })
