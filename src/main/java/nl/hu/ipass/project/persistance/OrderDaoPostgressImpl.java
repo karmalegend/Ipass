@@ -116,4 +116,20 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
         }
         return null;
     }
+
+    @Override
+    public boolean deleteOrderById(int orderId){
+        try {
+            PreparedStatement pres = con.prepareStatement("Delete FROM bestellingen where bestellingid = ?");
+            pres.setInt(1, orderId);
+            pres.executeUpdate();
+            return true;
+        }
+        catch (SQLException e){
+            System.out.println("this error comes from method five in orderdao");
+            System.out.println(e);
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

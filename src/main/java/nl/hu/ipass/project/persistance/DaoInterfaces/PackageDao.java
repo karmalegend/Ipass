@@ -10,4 +10,5 @@ public interface PackageDao {
     void addOrderByID(Package pakket,int id);
     Package getPackageByCustomerID(int id);
     boolean addPackage(Package pakket, Customer klant);
+    public boolean editPackage(String packageName, int packagePrice, int customerID);
 }

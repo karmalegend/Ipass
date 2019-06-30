@@ -9,4 +9,5 @@ public interface OrderDao {
     Order getOrdersByPackageID(int id);
     boolean addOrder(Package pakket, Service service,Order order);
     boolean addServiceToOrder(int orderID,int serviceID,int packageID);
+    public boolean deleteOrderById(int orderId);
 }

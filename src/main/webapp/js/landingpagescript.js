@@ -23,7 +23,7 @@ function getData(){
     })
     .catch(function(error){
        console.log(error);
-       window.location.href = "http://localhost:8080/";
+       window.location.href = "../";
     });
 }
 
@@ -92,11 +92,15 @@ function renderCustomer(customer){
     var customerPackageIdP = document.createElement("P");
     customerPackageIdP.textContent = customer.pakket.packageID;
 
+    //editbutton
+    var editPackageButton = document.createElement("I");
+    editPackageButton.className = "fas fa-edit";
 
     //add it all to the row
     customerPackageP.appendChild(customerPackagePTextNode);
     customerPackage.appendChild(customerPackageP);
     customerPackage.appendChild(customerPackageIdP);
+    customerPackage.appendChild(editPackageButton);
     customerRow.appendChild(customerPackage);
 
     //packagePrice
@@ -224,7 +228,14 @@ function renderCustomer(customer){
     }
 
 
-    arrListAddServiceButtons = document.querySelectorAll("i");
+    arrListEditPackageFavicon = document.querySelectorAll(".fa-edit");
+
+    for(var k = 0; k<arrListEditPackageFavicon.length; k++){
+      arrListEditPackageFavicon[k].addEventListener("click",editPackage);
+    }
+
+
+    arrListAddServiceButtons = document.querySelectorAll(".fa-plus");
     for(var l=0; l<arrListAddServiceButtons.length; l++){
       arrListAddServiceButtons[l].addEventListener("click",addService);
     }
@@ -253,7 +264,7 @@ function addService(event){
 
   let iarray = document.querySelectorAll("i");
 
-  //hide all the add service buttons to prevent user from bugging out the system.
+  //hide all the favicon buttons to prevent user from bugging out the system.
   for(let i =0; i<iarray.length; i++){
       iarray[i].style.visibility = "hidden";
     }
@@ -641,6 +652,65 @@ function editEvent(){
 }
 
 document.querySelector(".addCus").addEventListener("click",addCustomer);
+
+//edit package function
+function editPackage(event){
+  console.log(event);
+  let iarray = document.querySelectorAll("i");
+
+  //hide all the favicon buttons to prevent user from bugging out the system.
+  for(let i =0; i<iarray.length; i++){
+      iarray[i].style.visibility = "hidden";
+    }
+
+
+  event.path[1].childNodes[0].innerHTML = `
+  <select id="packageSelector">
+    <option value="2147483645">Superpakket</option>
+    <option value="2147483646">Ultrapakket</option>
+    <option value="2147483647">Dagelijks Pro</option>
+  </select>
+  <button type="button" class="btn btn-light editpackageSaveButton">save</button>
+  `
+
+  document.querySelector(".editpackageSaveButton").addEventListener("click", function(event){
+    console.log(event);
+    let formData = new FormData();
+    let packageid = event.path[2].childNodes[1].textContent;
+    let orderid = event.path[3].childNodes[2].childNodes[1].textContent;
+    let customerid = event.path[3].childNodes[0].childNodes[1].textContent;
+    let defaultPackageId = document.getElementById("packageSelector").value;
+
+    formData.append("defaultPackageID",defaultPackageId);
+    formData.append("currentOrderID",orderid);
+    formData.append("customerID",customerid);
+    formData.append("currentPackageId",packageid);
+
+    let encData = new URLSearchParams(formData.entries());
+
+    let fetchoptions = {
+      method: 'POST',
+      headers : {
+          'Authorization' : 'Bearer ' + window.sessionStorage.getItem("myJWT")
+      },
+      body : encData
+    };
+
+    fetch("/restservices/package/edit", fetchoptions)
+    .then(function(response){
+      if(response.ok){
+        location.reload();
+      }
+    });
+    console.log(logging);
+    
+  });
+}
+
+
+
+
+
 
 getData();
 

@@ -37,7 +37,7 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
 
             Statement getCust = con.createStatement();
 
-            ResultSet customers = getCust.executeQuery("select * from klant ORDER BY klantnummer ASC");
+            ResultSet customers = getCust.executeQuery("select * from klant WHERE klantnummer < 2147483645 ORDER BY klantnummer ASC");
 
             PackageDaoPosgressImpl packagedao = new PackageDaoPosgressImpl();
 

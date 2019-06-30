@@ -34,8 +34,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
     @Override
     public Package getPackagebyID(int id) {
         try{
-            PreparedStatement getPackID = con.prepareStatement("SELECT * FROM Pakket" +
-                    "WHERE PakketID = ?");
+            PreparedStatement getPackID = con.prepareStatement("SELECT * FROM Pakket WHERE PakketID = ?");
 
             getPackID.setInt(1,id);
 
@@ -189,6 +188,25 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
         }
         catch(SQLException e){
             System.out.println("This error comes from method 6 in packagedao");
+            System.out.println(e);
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean editPackage(String packageName, int packagePrice, int customerID){
+        try{
+            PreparedStatement preps = con.prepareStatement("UPDATE pakket SET pakketnaam = ?, pakketprijs = ? WHERE klantnummer = ?");
+            preps.setString(1,packageName);
+            preps.setInt(2,packagePrice);
+            preps.setInt(3,customerID);
+
+            preps.executeUpdate();
+            return true;
+        }
+        catch (SQLException e){
+            System.out.println("this error comes from method 7 in packagedao");
             System.out.println(e);
             e.printStackTrace();
             return false;
