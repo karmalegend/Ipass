@@ -32,7 +32,6 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
                 ord.addService(ser);
 
             }
-            con.close();
             return ord;
 
         }
@@ -53,7 +52,6 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
             preps.setInt(3,pakket.getPackageID());
 
             preps.executeUpdate();
-            con.close();
             return true;
 
         }
@@ -74,7 +72,6 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
             addSerOrd.setInt(3,packageID);
 
             addSerOrd.executeUpdate();
-            con.close();
             return true;
 
         }
@@ -109,7 +106,6 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
             }
 
             Order temp = new Order(orderID,arlist);
-            con.close();
             return temp;
 
         }
@@ -127,7 +123,6 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
             PreparedStatement pres = con.prepareStatement("Delete FROM bestellingen where bestellingid = ?");
             pres.setInt(1, orderId);
             pres.executeUpdate();
-            con.close();
             return true;
         }
         catch (SQLException e){
