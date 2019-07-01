@@ -54,6 +54,7 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
                 Customer tempCust = new Customer(id, name, kvknum, email, phNum,pakket);
                 allCustomers.add(tempCust);
             }
+            con.close();
             return allCustomers;
         }
         catch (SQLException e){
@@ -92,6 +93,7 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
 
 
            prepS.executeQuery();
+           con.close();
 
         }
         catch (SQLException e){
@@ -121,7 +123,7 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
 
             prepDel.executeUpdate();
             System.out.println("User with ID " + id + "succesfully deleted");
-
+            con.close();
             return true;
         }
         catch (SQLException e){

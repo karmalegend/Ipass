@@ -53,6 +53,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
 
 
               Package pack = new Package(idp,pakketnaam,Pakketprijs,orders);
+              con.close();
               return pack;
             }
 
@@ -72,6 +73,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
                     "WHERE PakketID = ?");
             preps.setInt(1,id);
             preps.executeQuery();
+            con.close();
         }
         catch(SQLException e){
             System.out.println("this error comes from method 2 in packagedao");
@@ -87,6 +89,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
             PreparedStatement preps = con.prepareStatement("DELETE FROM bestellingen" +
                     "WHERE BestellingID = ?");
             preps.executeQuery();
+            con.close();
 
         }
         catch(SQLException e){
@@ -125,6 +128,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
             }
             Order order = new Order(orderID,services);
             pakket.addOrder(order);
+            con.close();
 
 
         }
@@ -161,6 +165,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
 
                 return new Package(idp,name,price,orders);
             }
+            con.close();
         }
         catch(SQLException e){
             System.out.println("this error comes from method 5 in packagedao");
@@ -183,6 +188,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
             preps.setInt(4,pakket.getPagckagePrice());
 
             preps.executeUpdate();
+            con.close();
             return true;
 
         }
@@ -203,6 +209,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
             preps.setInt(3,customerID);
 
             preps.executeUpdate();
+            con.close();
             return true;
         }
         catch (SQLException e){

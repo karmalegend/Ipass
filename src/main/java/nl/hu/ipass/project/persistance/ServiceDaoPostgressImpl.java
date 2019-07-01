@@ -24,6 +24,7 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
 
 
             prepAddSer.executeQuery();
+            con.close();
 
         }
         catch(SQLException e){
@@ -50,6 +51,7 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
                 String freq = service.getString("ServiceFrequentie");
 
                 Service ser = new Service(id,servicename,servcicedienst,freq);
+                con.close();
                 return ser;
             }
 
@@ -71,6 +73,7 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
             delSer.setInt(1, id);
 
             delSer.executeQuery();
+            con.close();
         }
         catch(SQLException e){
             System.out.println("this error comes from method 3 in servicedao");
@@ -98,6 +101,7 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
                 Service ser = new Service(id,servicename,servcicedienst,freq);
                 services.add(ser);
             }
+            con.close();
             return services;
 
         }

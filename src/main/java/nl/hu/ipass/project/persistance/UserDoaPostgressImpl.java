@@ -22,6 +22,7 @@ public class UserDoaPostgressImpl extends PostgresBaseDao implements UserDao {
                 String role = result.getString("role");
                 System.out.println(result);
                 System.out.println("User " + name + " with role "+ role + " logged in");
+                con.close();
                 return role;
             }
             else{
