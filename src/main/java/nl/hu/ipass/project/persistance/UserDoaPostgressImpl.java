@@ -8,11 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDoaPostgressImpl extends PostgresBaseDao implements UserDao {
-    private Connection con = getConnection();
 
     @Override
     public String findRoleForUser(String name, String pass){
-        try(PreparedStatement roleFinder = con.prepareStatement("SELECT role FROM users WHERE username = (?) AND password = (?)")) {
+        try(Connection con = getConnection()) {
+            PreparedStatement roleFinder = con.prepareStatement("SELECT role FROM users WHERE username = (?) AND password = (?)");
             roleFinder.setString(1, name);
             roleFinder.setString(2, pass);
 
