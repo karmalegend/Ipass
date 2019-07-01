@@ -7,14 +7,12 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceDao {
-    private Connection con = getConnection();
 
     @Override
     public void addService(Service service) {
-        try{
+        try(Connection con = getConnection()){
             PreparedStatement prepAddSer = con.prepareStatement("INSERT INTO Service(ServiceID,Servicenaam,Servicedienst,ServiceFrequentie)" +
                     "VALUES(?,?,?,?)");
-
 
             prepAddSer.setInt(1,service.getServiceID());
             prepAddSer.setString(2,service.getServiceName());
@@ -36,9 +34,8 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
 
     @Override
     public Service getServiceByID(int serid) {
-        try{
+        try(Connection con = getConnection()){
             PreparedStatement prepGetSer = con.prepareStatement("SELECT * FROM Service WHERE ServiceID = ?");
-
             prepGetSer.setInt(1,serid);
 
             ResultSet service = prepGetSer.executeQuery();
@@ -65,9 +62,8 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
 
     @Override
     public void deleteServiceByID(int id) {
-        try {
+        try(Connection con = getConnection()) {
             PreparedStatement delSer = con.prepareStatement("DELETE FROM Service WHERE ServiceID = ?");
-
             delSer.setInt(1, id);
 
             delSer.executeQuery();
@@ -81,9 +77,8 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
 
     @Override
     public ArrayList<Service> getAllServices() {
-        try{
+        try(Connection con = getConnection()){
             Statement smt = con.createStatement();
-
             ResultSet service = smt.executeQuery("SELECT * FROM Service");
 
             ArrayList<Service> services = new ArrayList<>();

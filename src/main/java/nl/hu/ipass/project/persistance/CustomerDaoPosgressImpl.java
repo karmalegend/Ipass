@@ -8,10 +8,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class CustomerDaoPosgressImpl extends PostgresBaseDao implements CustomerDao{
-    private Connection con = getConnection();
-
-
-
     /*
     *
     * This function returns a list of all customers
@@ -32,10 +28,9 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
 
     @Override
     public ArrayList<Customer> getAllCustomers() {
-        try {
-            ArrayList<Customer> allCustomers = new ArrayList<>();
-
+        try (Connection con = getConnection()){
             Statement getCust = con.createStatement();
+            ArrayList<Customer> allCustomers = new ArrayList<>();
 
             ResultSet customers = getCust.executeQuery("select * from klant WHERE klantnummer < 2147483645 ORDER BY klantnummer ASC");
 
@@ -78,12 +73,12 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
     * */
     @Override
     public void updateCustomer(Customer customer) {
-        try{
-           PreparedStatement prepS =
-                   con.prepareStatement("UPDATE Klant" +
-                    "SET Bedrijfsnaam = ?, KvKnummer = ?,Emailadress = ?,TelefoonNummer = ?" +
-                    "WHERE Klantnummer = ?");
 
+        try(Connection con = getConnection()) {
+            PreparedStatement prepS =
+                    con.prepareStatement("UPDATE Klant" +
+                            " SET Bedrijfsnaam = ?, KvKnummer = ?,Emailadress = ?,TelefoonNummer = ?" +
+                            " WHERE Klantnummer = ?");
            prepS.setString(1,customer.getCompanyname());
            prepS.setInt(2,customer.getKvkNumber());
            prepS.setString(3,customer.getEmailadress());
@@ -114,9 +109,9 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
     * */
     @Override
     public boolean deleteCustomerbyId(int id) {
-        try {
-            PreparedStatement prepDel = con.prepareStatement("DELETE FROM Klant WHERE Klantnummer = ?");
+        try(Connection con = getConnection()) {
 
+            PreparedStatement prepDel = con.prepareStatement("DELETE FROM Klant WHERE Klantnummer = ?");
             prepDel.setInt(1, id);
 
             prepDel.executeUpdate();
@@ -149,7 +144,7 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
 
     @Override
     public void updateEmailbyID(int id, String email) {
-        try{
+        try(Connection con = getConnection()){
             PreparedStatement prepUpdateEm = con.prepareStatement("UPDATE Klant" +
                     "SET Emailadress = ?" +
                     "WHERE Klantnummer = ?");
@@ -170,8 +165,9 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
 
     @Override
     public boolean addCustomer(Customer customer) {
-        try{
-            PreparedStatement prepAddCus = con.prepareStatement("INSERT INTO Klant(Klantnummer,Bedrijfsnaam,KvKnummer,Emailadress,Telefoonnummer) VALUES(?,?,?,?,?)");
+        try(Connection con = getConnection()){
+            PreparedStatement prepAddCus = con.prepareStatement("INSERT INTO Klant(Klantnummer,Bedrijfsnaam,KvKnummer,Emailadress,Telefoonnummer) " +
+                    "VALUES(?,?,?,?,?)");
 
             prepAddCus.setInt(1,customer.getCustomerID());
             prepAddCus.setString(2,customer.getCompanyname());
@@ -193,8 +189,9 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
     }
 
     public boolean updateCustomerInfo(String name, String email, int phone, int id) {
-        try {
-            PreparedStatement prepUpdateCus = con.prepareStatement("UPDATE Klant SET bedrijfsnaam = ?, emailadress = ?, telefoonnummer = ? WHERE klantnummer = ?");
+        try (Connection con = getConnection();){
+            PreparedStatement prepUpdateCus = con.prepareStatement("UPDATE Klant SET bedrijfsnaam = ?, emailadress = ?, telefoonnummer = ? " +
+                    "WHERE klantnummer = ?");
 
             prepUpdateCus.setString(1,name);
             prepUpdateCus.setString(2,email);

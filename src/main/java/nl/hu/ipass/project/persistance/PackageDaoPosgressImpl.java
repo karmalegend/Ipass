@@ -29,13 +29,11 @@ import java.util.ArrayList;
 * */
 
 public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDao {
-    private Connection con = getConnection();
 
     @Override
     public Package getPackagebyID(int id) {
-        try{
+        try(Connection con = getConnection()){
             PreparedStatement getPackID = con.prepareStatement("SELECT * FROM Pakket WHERE PakketID = ?");
-
             getPackID.setInt(1,id);
 
             ResultSet rs = getPackID.executeQuery();
@@ -67,9 +65,9 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
 
     @Override
     public void deletePackagebyID(int id) {
-        try{
+        try(Connection con = getConnection()){
             PreparedStatement preps = con.prepareStatement("DELETE FROM Pakket" +
-                    "WHERE PakketID = ?");
+                    " WHERE PakketID = ?");
             preps.setInt(1,id);
             preps.executeQuery();
         }
@@ -83,9 +81,9 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
 
     @Override
     public void removeOrderbyId(Package pakket,int id) {
-        try{
+        try(Connection con = getConnection()){
             PreparedStatement preps = con.prepareStatement("DELETE FROM bestellingen" +
-                    "WHERE BestellingID = ?");
+                    " WHERE BestellingID = ?");
             preps.executeQuery();
 
         }
@@ -99,10 +97,9 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
 
     @Override
     public void addOrderByID(Package pakket,int id) {
-        try{
+        try(Connection con = getConnection()){
             PreparedStatement preps = con.prepareStatement("SELECT * FROM Bestellingen" +
-                    "WHERE BestellingID = ?");
-
+                    " WHERE BestellingID = ?");
             int orderID = 0;
 
             preps.setInt(1,id);
@@ -139,10 +136,9 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
     @Override
     public Package getPackageByCustomerID(int id){
 
-        try{
+        try(Connection con = getConnection()){
             PreparedStatement preps = con.prepareStatement("SELECT * FROM pakket WHERE Klantnummer = ?");
             preps.setInt(1,id);
-
             ResultSet item = preps.executeQuery();
 
             OrderDaoPostgressImpl orderdao = new OrderDaoPostgressImpl();
@@ -175,7 +171,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
 
     @Override
     public boolean addPackage(Package pakket, Customer klant) {
-        try{
+        try(Connection con = getConnection()){
             PreparedStatement preps = con.prepareStatement("INSERT INTO pakket(pakketid,klantnummer,pakketnaam,pakketprijs) VALUES(?,?,?,?)");
             preps.setInt(1,pakket.getPackageID());
             preps.setInt(2,klant.getCustomerID());
@@ -196,7 +192,7 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
 
     @Override
     public boolean editPackage(String packageName, int packagePrice, int customerID){
-        try{
+        try(Connection con = getConnection()){
             PreparedStatement preps = con.prepareStatement("UPDATE pakket SET pakketnaam = ?, pakketprijs = ? WHERE klantnummer = ?");
             preps.setString(1,packageName);
             preps.setInt(2,packagePrice);

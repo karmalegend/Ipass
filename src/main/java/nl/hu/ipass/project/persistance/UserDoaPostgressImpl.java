@@ -12,8 +12,7 @@ public class UserDoaPostgressImpl extends PostgresBaseDao implements UserDao {
 
     @Override
     public String findRoleForUser(String name, String pass){
-        try {
-            PreparedStatement roleFinder = con.prepareStatement("SELECT role FROM users WHERE username = (?) AND password = (?)");
+        try(PreparedStatement roleFinder = con.prepareStatement("SELECT role FROM users WHERE username = (?) AND password = (?)")) {
             roleFinder.setString(1, name);
             roleFinder.setString(2, pass);
 

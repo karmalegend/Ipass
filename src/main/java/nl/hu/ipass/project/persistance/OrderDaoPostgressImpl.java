@@ -12,11 +12,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
-    private Connection con = getConnection();
-
     @Override
     public Order getOrderbyId(int id) {
-        try{
+        try(Connection con = getConnection()){
             PreparedStatement prepOrdId = con.prepareStatement("SELECT ServiceID FROM Bestellingen WHERE bestellingID = ?");
             prepOrdId.setInt(1,id);
 
@@ -45,8 +43,9 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
 
     @Override
     public boolean addOrder(Package pakket, Service service, Order order) {
-        try{
+        try(Connection con = getConnection()){
             PreparedStatement preps = con.prepareStatement("INSERT INTO bestellingen(bestellingid,serviceid,pakketid) VALUES(?,?,?)");
+
             preps.setInt(1,order.getOrderID());
             preps.setInt(2,service.getServiceID());
             preps.setInt(3,pakket.getPackageID());
@@ -65,7 +64,7 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
 
     @Override
     public boolean addServiceToOrder(int orderID, int serviceID, int packageID) {
-        try{
+        try(Connection con = getConnection()){
             PreparedStatement addSerOrd = con.prepareStatement("INSERT INTO bestellingen(bestellingid,serviceid,pakketid) VALUES(?,?,?)");
             addSerOrd.setInt(1,orderID);
             addSerOrd.setInt(2,serviceID);
@@ -85,9 +84,8 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
 
     @Override
     public Order getOrdersByPackageID(int id){
-        try{
+        try(Connection con = getConnection()){
             PreparedStatement state = con.prepareStatement("SELECT * FROM Bestellingen WHERE PakketID = ?");
-
             state.setInt(1,id);
 
             ResultSet results = state.executeQuery();
@@ -119,7 +117,7 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
 
     @Override
     public boolean deleteOrderById(int orderId){
-        try {
+        try(Connection con = getConnection()) {
             PreparedStatement pres = con.prepareStatement("Delete FROM bestellingen where bestellingid = ?");
             pres.setInt(1, orderId);
             pres.executeUpdate();
