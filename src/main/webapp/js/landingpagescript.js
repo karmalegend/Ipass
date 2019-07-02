@@ -29,7 +29,8 @@ function getData(){
 
 // This function calls the render function for every
 // Customer in the array
-function initialLoadIn(response){    
+function initialLoadIn(response){
+  document.querySelector("#loading").innerHTML = "";    
     for(var i = 0; i<response.length; i++){
         renderCustomer(response[i]);
     }
@@ -68,10 +69,12 @@ function renderCustomer(customer){
 
     var customerNameP = document.createElement("P");
     var customerNamePTextNode = document.createTextNode(customer.companyname);
+    customerNameP.setAttribute("title","Company Name");
 
     //customerID
     var customerIdP = document.createElement("P");
     customerIdP.textContent = customer.customerID;
+    customerIdP.setAttribute("title","CustomerID");
 
 
     //add it all to the row
@@ -86,11 +89,13 @@ function renderCustomer(customer){
 
     var customerPackageP = document.createElement("P");
     var customerPackagePTextNode = document.createTextNode(customer.pakket.packageName);
+    customerPackageP.setAttribute("title","Package Name");
 
 
     //package ID
     var customerPackageIdP = document.createElement("P");
     customerPackageIdP.textContent = customer.pakket.packageID;
+    customerPackageIdP.setAttribute("title","Package ID");
 
     //editbutton
     var editPackageButton = document.createElement("I");
@@ -295,9 +300,17 @@ function addServiceEventListener(){
 //to add the service to the customers order.
 function addServiceEventHandler(event){
   let formData = new FormData();
-  let serviceID = event.path[2].childNodes[4].value;
+  let idIdentifier = event.path[2].childNodes.length - 2;
+  let serviceID = event.path[2].childNodes[idIdentifier].value;
   let packageID = event.path[4].childNodes[1].children[1].textContent;
   let orderID = event.path[4].childNodes[2].childNodes[1].textContent;
+
+
+  console.log(event.path[2].childNodes[idIdentifier]);
+  console.log(event);
+
+  console.log(event.path[2].childNodes[4].value);
+  console.log("service id = " + serviceID + " package id = " + packageID + " order id = " + orderID);
 
   formData.append("serviceID",serviceID);
   formData.append("packageID",packageID);
@@ -685,12 +698,18 @@ function editPackage(event){
   `
 
   document.querySelector(".editpackageSaveButton").addEventListener("click", function(event){
+    event.currentTarget.disabled = true;
     console.log(event);
     let formData = new FormData();
     let packageid = event.path[2].childNodes[1].textContent;
     let orderid = event.path[3].childNodes[2].childNodes[1].textContent;
     let customerid = event.path[3].childNodes[0].childNodes[1].textContent;
     let defaultPackageId = document.getElementById("packageSelector").value;
+
+    let imgload = document.createElement("img");
+    imgload.setAttribute("src","img/loginpage/Double Ring-3.5s-59px.gif");
+
+    event.path[2].appendChild(imgload)
 
     formData.append("defaultPackageID",defaultPackageId);
     formData.append("currentOrderID",orderid);
@@ -713,7 +732,7 @@ function editPackage(event){
         location.reload();
       }
     });
-    console.log(logging);
+    // console.log(logging);
     
   });
 }

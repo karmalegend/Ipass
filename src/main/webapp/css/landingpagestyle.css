@@ -8,6 +8,10 @@
 }
 
 
+input{
+    color: black;
+}
+
 /* Style the header */
 .header {
     padding: 10px 16px;

@@ -33,8 +33,9 @@ public class serviceResource {
     @RolesAllowed("admin")
     @GET
     @Produces("application/json")
-    @Path("get/{serviceID}")
+    @Path("/get/{serviceID}")
     public Service getServicebyId(@PathParam("serviceID") int id){
+        System.out.println(id);
         ServiceDaoPostgressImpl serdao = new ServiceDaoPostgressImpl();
         Service ser = serdao.getServiceByID(id);
         System.out.println(ser);
