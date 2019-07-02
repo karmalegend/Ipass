@@ -114,11 +114,13 @@ function renderCustomer(customer){
 
     var packagePriceP = document.createElement("P");
     var packagePricePTextNode = document.createTextNode(customer.pakket.pagckagePrice);
+    packagePriceP.setAttribute("title","Package price");
 
 
     //order id
     let cusOrderId = document.createElement("p");
     cusOrderId.textContent = customer.pakket.orders[0].orderID;
+    cusOrderId.setAttribute("title","Orderid");
 
 
     //add it all to the row
@@ -143,6 +145,7 @@ function renderCustomer(customer){
     //customerEmail
     var customerInfoP = document.createElement("p");
     customerInfoPTextNode = document.createTextNode(customer.emailadress);
+    customerInfoP.setAttribute("title","Emailadress");
     
 
     //add to row
@@ -153,7 +156,7 @@ function renderCustomer(customer){
     //customerphone number
     var customerInfoP1 = document.createElement("p");
     customerInfoP1TextNode = document.createTextNode(customer.phonenumber);
-
+    customerInfoP1.setAttribute("title","Phonenumber");
 
     //add to row
     customerInfoP1.appendChild(customerInfoP1TextNode);
@@ -166,6 +169,7 @@ function renderCustomer(customer){
     var customerServices = document.createElement("div");
     customerServices.className= "customerServices";
     var ul = document.createElement("ul");
+    ul.setAttribute("title","Services");
     ul.id = `ul${customer.customerID}`;
 
     //make a LI element for every service in the package
@@ -521,6 +525,10 @@ function saveCustomerFunction(event){
     alert("Please verify your input and try again")
   }
   else{
+    let imgload = document.createElement("img");
+    imgload.setAttribute("src","img/landingpage/Spinner-1s-21px.svg");
+    event.currentTarget.disabled = true;
+    event.path[0].appendChild(imgload);
     fetch("restservices/customer", fetchoptions)
     .then(response => response.json())
     .then(function(response){
@@ -707,9 +715,9 @@ function editPackage(event){
     let defaultPackageId = document.getElementById("packageSelector").value;
 
     let imgload = document.createElement("img");
-    imgload.setAttribute("src","img/loginpage/Double Ring-3.5s-59px.gif");
+    imgload.setAttribute("src","img/landingpage/Spinner-1s-21px.svg");
 
-    event.path[2].appendChild(imgload)
+    event.path[0].appendChild(imgload)
 
     formData.append("defaultPackageID",defaultPackageId);
     formData.append("currentOrderID",orderid);
@@ -736,6 +744,16 @@ function editPackage(event){
     
   });
 }
+
+
+//add logout functionality
+document.querySelector("#logoutButton").addEventListener("click",function(){
+  let confirmbox = confirm("Are you sure you want to log out?");
+  if(confirmbox){
+    sessionStorage.removeItem("myJWT");
+    window.location.href = "../";
+  }
+});
 
 
 getData();
