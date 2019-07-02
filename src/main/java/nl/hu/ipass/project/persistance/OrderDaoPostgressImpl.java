@@ -12,6 +12,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
+
+
+
+    /*Get an order by ID to add it to a customer
+    * parses data into a domain object*/
     @Override
     public Order getOrderbyId(int id) {
         try(Connection con = getConnection()){
@@ -41,6 +46,8 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
         return null;
     }
 
+
+    /*Add an order to a pacakge*/
     @Override
     public boolean addOrder(Package pakket, Service service, Order order) {
         try(Connection con = getConnection()){
@@ -62,6 +69,12 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
         }
     }
 
+
+    /*
+    *
+    * add a service to an existing package
+    *
+    * */
     @Override
     public boolean addServiceToOrder(int orderID, int serviceID, int packageID) {
         try(Connection con = getConnection()){
@@ -82,6 +95,12 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
         }
     }
 
+
+
+    /*Get the orders of a package
+    *
+    * this is done to set default package services
+    * */
     @Override
     public Order getOrdersByPackageID(int id){
         try(Connection con = getConnection()){
@@ -114,6 +133,13 @@ public class OrderDaoPostgressImpl extends PostgresBaseDao implements OrderDao {
         }
         return null;
     }
+
+
+
+
+    /*Delete an order
+    * based on its ID
+    * */
 
     @Override
     public boolean deleteOrderById(int orderId){

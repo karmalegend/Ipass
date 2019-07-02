@@ -374,7 +374,7 @@ function addServiceEventHandler(event){
 }
 
 
-
+// Delete a customer
 function deleteCus(event){
     let id = event.path[2].childNodes[0].children[1].innerText;
     console.log("customer id = " + id);
@@ -387,13 +387,17 @@ function deleteCus(event){
 
     };
 
+    // check if user is sure
     let cfBox = confirm("Are you sure? This action will permanently remove a customer and is non-reversible")
     if(cfBox){
+      // tell server to delete customer
         fetch("/restservices/customer/del/"+id,delfetch)
         .then(function(response){
             if(response.ok){
                 console.log("Customer deleted")
+                // get the container div
                 let parent = document.querySelector(".container");
+                // tell it to unpack the row
                 parent.removeChild(event.path[4]);
             }
             else if(response.status == 404){
@@ -405,7 +409,7 @@ function deleteCus(event){
 }
 
 
-
+// this function just loads in the form to add a customer 
 function addCustomer(event){
     console.log("add button clicked");
    
@@ -500,6 +504,7 @@ function cancelCustomerFunction(){
     document.querySelector("#addcustomerformloadin").innerHTML = "";
 }
 
+// add the actual customer to the database
 function saveCustomerFunction(event){
     let formData = new FormData(document.querySelector("#newCustomerForm"));
     console.log(formData);
@@ -520,6 +525,8 @@ function saveCustomerFunction(event){
   || formData.get("service5") > 8 || formData.get("service6") > 8){
     alert("There are no services with an ID higher than 8 please check your input")
   }
+  // check if a service is filled in
+  // to prevent orderID from becomming corrupted
   else if(formData.get("service1").length == 0 && 
   formData.get("service2").length == 0 && formData.get("service3").length == 0 && formData.get("service4").length == 0 && formData.get("service5").length== 0 
   && formData.get("service6").length == 0){
@@ -533,6 +540,7 @@ function saveCustomerFunction(event){
     alert("Please verify your input and try again")
   }
   else{
+    // let user know server is processing by loading icon
     let imgload = document.createElement("img");
     imgload.setAttribute("src","img/landingpage/Spinner-1s-21px.svg");
     event.currentTarget.disabled = true;
@@ -542,6 +550,7 @@ function saveCustomerFunction(event){
       if(response.ok){
         response = response.json();
         renderCustomer(response);
+        // if customer is added close the form
         cancelCustomerFunction();
       }
       else{
@@ -554,21 +563,22 @@ function saveCustomerFunction(event){
 }
 
 
+
+// edit a customers information
 function edit(event){
+
+  //set the old values in case the user cancels
     customername = event.path[2].childNodes[0].childNodes[0].textContent;
     customerEmail = event.path[2].childNodes[4].childNodes[0].textContent;
     customerPhone = event.path[2].childNodes[4].childNodes[1].textContent;
 
+    // weird bug fix
     if(customerPhone.length == 5){
       customerPhone = event.path[2].childNodes[4].childNodes[2].textContent;
       // path[2].childNodes[4].childNodes[2]
     }
 
-
-    console.log(event.path[2].childNodes[4].childNodes[1].length);
-    console.log(event.path[2].childNodes[4].childNodes[1].textContent);
-    console.log(customerPhone);
-
+    // turn data fields into inputs
     event.path[2].childNodes[0].childNodes[0].innerHTML = `
       <form id="customerName">
         <input id="nameCus" type="text" placeholder="test" value="${customername}" name="customerName"/>
@@ -588,9 +598,6 @@ function edit(event){
       <button type="button" class="btn btn-info save">Save</button>
       ` 
         
-    console.log("Edit button");
-    console.log(event);
-
     cancelEventListener();
     saveEventListener();
 }
@@ -599,7 +606,7 @@ function saveEventListener(){
   document.querySelector(".save").addEventListener("click",saveEventHandler);
 }
 
-
+// save the new data 
 function saveEventHandler(event){
   let formData = new FormData(document.querySelector("#customerName"),document.querySelector("#customerContact"));
   
@@ -607,6 +614,7 @@ function saveEventHandler(event){
   let email = document.querySelector("#email").value;
   let phone = document.querySelector("#phone").value;
 
+  // add values to formdata
   formData.append("customerEmail",email);
   
   formData.append("customerPhone",phone);
@@ -624,12 +632,16 @@ function saveEventHandler(event){
     body : encData
 };
 
+// request backend
 fetch("restservices/customer", fetchoptions)
 .then(function(response){
   if(response.ok){
+    // if response is ok edit row to display new data
     event.path[2].childNodes[0].childNodes[0].innerHTML = `<p>${name}</p>`;
     event.path[2].childNodes[4].innerHTML = `<p>${email}</p>
     <p>${phone}</p>`;
+
+    // add back the old buttons
   
   event.path[1].innerHTML = `
     <button type="button" class="btn btn-danger delete">Delete</button>
@@ -639,6 +651,7 @@ fetch("restservices/customer", fetchoptions)
   arrlistEditButtons = document.querySelectorAll(".edit")
 
 
+  // add event listeners to newly packed buttons
   for(var j = 0; j<arrlistEditButtons.length; j++){
       arrlistEditButtons[j].addEventListener("click",edit);
   }
@@ -659,14 +672,16 @@ function cancelEventListener(){
 }
 
 
+// if user cancels the edit customer
 function cancelEventHandler(event){
 
-  console.log(customerPhone);
+  // set old values back
   event.path[2].childNodes[0].childNodes[0].innerHTML = `<p>${customername}</p>`;
   event.path[2].childNodes[4].innerHTML = `<p>${customerEmail}</p>
   <p>${customerPhone}</p>`;
   
 
+// add buttons again
   event.path[1].innerHTML = `
   <button type="button" class="btn btn-danger delete">Delete</button>
   <button type="button" class="btn btn-info edit">Edit</button>
@@ -675,7 +690,7 @@ function cancelEventHandler(event){
 
   arrlistEditButtons = document.querySelectorAll(".edit")
 
-
+// add event listeners to buttons
   for(var j = 0; j<arrlistEditButtons.length; j++){
       arrlistEditButtons[j].addEventListener("click",edit);
   }
@@ -685,11 +700,6 @@ function cancelEventHandler(event){
   for(var l=0; l<arlistDelButtons.length; l++){
       arlistDelButtons[l].addEventListener("click",deleteCus);
   }
-
-
-  console.log(event);
-  console.log("other stuff");
-  console.log("name" + customername + "email" + customerEmail + "phone" + customerPhone);
 
 }
 
@@ -710,7 +720,7 @@ function editPackage(event){
       iarray[i].style.visibility = "hidden";
     }
 
-
+// show the default packages
   event.path[1].childNodes[0].innerHTML = `
   <select id="packageSelector">
     <option value="2147483645">Superpakket</option>
@@ -719,21 +729,25 @@ function editPackage(event){
   </select>
   <button type="button" class="btn btn-dark editpackageSaveButton">Save</button>
   `
-
+// add a save button to edit package
   document.querySelector(".editpackageSaveButton").addEventListener("click", function(event){
+    // disable people from spamming the button to bug out the system
     event.currentTarget.disabled = true;
-    console.log(event);
     let formData = new FormData();
     let packageid = event.path[2].childNodes[1].textContent;
     let orderid = event.path[3].childNodes[2].childNodes[1].textContent;
     let customerid = event.path[3].childNodes[0].childNodes[1].textContent;
     let defaultPackageId = document.getElementById("packageSelector").value;
 
+    // get all needed info for backend
+
     let imgload = document.createElement("img");
     imgload.setAttribute("src","img/landingpage/Spinner-1s-21px.svg");
 
     event.path[0].appendChild(imgload)
+    
 
+    // add data to formdata element
     formData.append("defaultPackageID",defaultPackageId);
     formData.append("currentOrderID",orderid);
     formData.append("customerID",customerid);
@@ -749,14 +763,13 @@ function editPackage(event){
       body : encData
     };
 
+    // send data to backend
     fetch("/restservices/package/edit", fetchoptions)
     .then(function(response){
       if(response.ok){
         location.reload();
       }
-    });
-    // console.log(logging);
-    
+    });   
   });
 }
 

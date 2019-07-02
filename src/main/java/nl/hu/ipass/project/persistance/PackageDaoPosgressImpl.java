@@ -16,19 +16,19 @@ import java.util.ArrayList;
 
 /*
 *
-*
-* TODO:
-* save me pls pepe  https://i.kym-cdn.com/entries/icons/original/000/025/382/Screen_Shot_2018-02-06_at_3.37.14_PM.png
-*
-* very serious comment btw
-*
-*
-* I'm so bored please save me.
-*
+* removed weird comment
 *
 * */
 
 public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDao {
+
+
+    /*
+    *
+    * get a package by its ID
+    *
+    *
+    * */
 
     @Override
     public Package getPackagebyID(int id) {
@@ -63,6 +63,9 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
         return null;
     }
 
+
+    /*delete a package */
+
     @Override
     public void deletePackagebyID(int id) {
         try(Connection con = getConnection()){
@@ -79,6 +82,8 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
 
     }
 
+
+    /*remove an order when customer gets deleted*/
     @Override
     public void removeOrderbyId(Package pakket,int id) {
         try(Connection con = getConnection()){
@@ -95,6 +100,11 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
 
     }
 
+    /*
+    *
+    * add an order to a package based on id
+    *
+    * */
     @Override
     public void addOrderByID(Package pakket,int id) {
         try(Connection con = getConnection()){
@@ -133,6 +143,12 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
 
     }
 
+
+
+    /*Get a package by customerID
+    *
+    * to render all customers*/
+
     @Override
     public Package getPackageByCustomerID(int id){
 
@@ -169,6 +185,17 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
 
 //    TODO : addPackage function
 
+
+    /*
+    *
+    *
+    * add package functions
+    *
+    * adds a package to a customer
+    * goes via domainmodel
+    *
+    * */
+
     @Override
     public boolean addPackage(Package pakket, Customer klant) {
         try(Connection con = getConnection()){
@@ -190,6 +217,8 @@ public class PackageDaoPosgressImpl extends PostgresBaseDao implements PackageDa
         }
     }
 
+
+    /*Edit a package and its details*/
     @Override
     public boolean editPackage(String packageName, int packagePrice, int customerID){
         try(Connection con = getConnection()){

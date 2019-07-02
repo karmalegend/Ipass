@@ -46,7 +46,8 @@ public class JwtAuth {
         return generatedPassword;
     }
 
-
+    /*Creates security token to verify user
+    * gets used in @rolesallowed*/
 
     private String createToken(String username, String role) throws JwtException{
         Calendar expiration = Calendar.getInstance();
@@ -61,6 +62,8 @@ public class JwtAuth {
     }
 
 
+    /*
+    * Returns the JWT token to the browser*/
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -88,5 +91,30 @@ public class JwtAuth {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
+    }
+
+
+    /*
+    * Adds a new user to the system
+    * default role and only role is admin
+    * this is because only employees should use the system
+    * every employee has the same rights.
+    * being everything
+    * */
+    @Path("/add")
+    @POST
+    @RolesAllowed("admin")
+    @Produces("application/json")
+    public Response addUser(@FormParam("username") String username,
+                            @FormParam("password") String password){
+        System.out.println(username + " : " +  password);
+        String role = "admin";
+        UserDoaPostgressImpl userDao = new UserDoaPostgressImpl();
+        String pwHash = get_SHA_512_SecurePassword(password);
+
+        if(!userDao.addUser(username,pwHash,role)){
+            return Response.status(409).build();
+        }
+        return Response.ok().build();
     }
 }

@@ -15,15 +15,6 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
     * This is used to render a list of all customers on the front-end
     *
     *
-    * TODO:
-    *
-    *
-    * test function and add it to
-    * @GET
-    *
-    * @RolesAllowed ADMIN !!!!
-    *
-    *
     * */
 
     @Override
@@ -66,9 +57,6 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
     * This function takes a customer as argument upon which it updates all the values of that given customer
     * in the database F.E both kvknum and email changed so you change all of those based on custNum matching
     *
-    * TODO:
-    *
-    * Test given function
     *
     * */
     @Override
@@ -100,12 +88,6 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
     /*
     * This is a function that deletes a customer from the database based on it's customerID
     * This function also deletes every reference.
-    *
-    * TODO:
-    *
-    * Have added on delete cascade for now. Not yet tested.
-    *
-    * check query need to either delete references aswell or add an on delete cascade.
     * */
     @Override
     public boolean deleteCustomerbyId(int id) {
@@ -135,11 +117,6 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
     * F.E customer 123 has a new emailadress they went from manager@org.com to ceo@org.com
     * Then you provide both 123 and the new emailadress in the function call and it will be updated in the database
     *
-    * TODO:
-    *
-    *
-    * test given function
-    *
     * */
 
     @Override
@@ -163,6 +140,11 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
 
     }
 
+
+
+    /*Function to add new customer fills in everyfield
+    * data checks are done in front-end so no need to handle them here
+    * */
     @Override
     public boolean addCustomer(Customer customer) {
         try(Connection con = getConnection()){
@@ -188,6 +170,14 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
         }
     }
 
+    /*
+    *
+    * edit some basic customer details
+    * company name email and phone number
+    * every other value is static and cannot be changed
+    *
+    *
+    * */
     public boolean updateCustomerInfo(String name, String email, int phone, int id) {
         try (Connection con = getConnection();){
             PreparedStatement prepUpdateCus = con.prepareStatement("UPDATE Klant SET bedrijfsnaam = ?, emailadress = ?, telefoonnummer = ? " +

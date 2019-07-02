@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceDao {
 
+
+    /*Add a service to an existing order*/
     @Override
     public void addService(Service service) {
         try(Connection con = getConnection()){
@@ -32,6 +34,11 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
 
     }
 
+
+    /*
+    *
+    * Get a service based off of it's ID
+    * */
     @Override
     public Service getServiceByID(int serid) {
         try(Connection con = getConnection()){
@@ -60,6 +67,15 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
 
     }
 
+
+
+    /*
+    *
+    * Delete a service by ID pretty sure this is a redundant
+    * method
+    *
+    * */
+
     @Override
     public void deleteServiceByID(int id) {
         try(Connection con = getConnection()) {
@@ -75,6 +91,17 @@ public class ServiceDaoPostgressImpl extends PostgresBaseDao implements ServiceD
         }
     }
 
+
+    /*
+    *
+    *
+    * get all the services
+    *
+    * Used to help new employees that don't yet know the services.
+    *
+    * Can be accesed via the navbar on the landingpage
+    *
+    * */
     @Override
     public ArrayList<Service> getAllServices() {
         try(Connection con = getConnection()){

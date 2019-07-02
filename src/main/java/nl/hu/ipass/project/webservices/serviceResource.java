@@ -13,6 +13,11 @@ import java.util.ArrayList;
 @Path("/service")
 public class serviceResource {
 
+
+    /*Add a service to customer
+    *
+    * access via the white + on landingpage
+    * */
     @RolesAllowed("admin")
     @POST
     @Produces("application/json")
@@ -30,6 +35,13 @@ public class serviceResource {
         return Response.ok().build();
     }
 
+
+
+    /*Get a service based on it's ID
+    *
+    * Used in the status toast
+    *
+    * */
     @RolesAllowed("admin")
     @GET
     @Produces("application/json")
@@ -42,6 +54,13 @@ public class serviceResource {
         return(ser);
     }
 
+
+    /*
+    * Get all services see servicedaopostgresimpl
+    *
+    * for method description
+    *
+    * */
     @RolesAllowed("admin")
     @GET
     @Produces("application/json")

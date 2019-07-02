@@ -18,6 +18,14 @@ import java.util.ArrayList;
 @Path("/customer")
 public class CustomerResource {
 
+    /*
+    *
+    * Get all the customers
+    *
+    *
+    * return an arraylist
+    * */
+
     @GET
     @Path("/all")
     @Produces("application/json")
@@ -74,6 +82,9 @@ public class CustomerResource {
 
             ArrayList<Service> services = new ArrayList<>();
 
+
+            /* Check if they have an input value*/
+
             if (service1 != 0) {
                 Service Service1 = serviceDao.getServiceByID(service1);
                 services.add(Service1);
@@ -129,6 +140,8 @@ public class CustomerResource {
             return Response.ok(customer).build();
     }
 
+
+    /*edit a customers info*/
     @PUT
     @RolesAllowed("admin")
     @Produces("application/json")
