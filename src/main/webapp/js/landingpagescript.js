@@ -520,8 +520,16 @@ function saveCustomerFunction(event){
   || formData.get("service5") > 8 || formData.get("service6") > 8){
     alert("There are no services with an ID higher than 8 please check your input")
   }
+  else if(formData.get("service1").length == 0 && 
+  formData.get("service2").length == 0 && formData.get("service3").length == 0 && formData.get("service4").length == 0 && formData.get("service5").length== 0 
+  && formData.get("service6").length == 0){
+    alert("Please fill in atleast 1 service");
+  }
+
+  //check if all fields contain a value
   else if(formData.get("price").length == 0 || formData.get("packagename").length == 0 || formData.get("phonenumber").length == 0 || 
-  formData.get("email").length == 0 || formData.get("kvknum").length == 0 || formData.get("compname").length == 0){
+  formData.get("email").length == 0 || formData.get("kvknum").length == 0 || formData.get("compname").length == 0)
+  {
     alert("Please verify your input and try again")
   }
   else{
@@ -530,10 +538,17 @@ function saveCustomerFunction(event){
     event.currentTarget.disabled = true;
     event.path[0].appendChild(imgload);
     fetch("restservices/customer", fetchoptions)
-    .then(response => response.json())
     .then(function(response){
-      renderCustomer(response);
-      cancelCustomerFunction();
+      if(response.ok){
+        response = response.json();
+        renderCustomer(response);
+        cancelCustomerFunction();
+      }
+      else{
+        alert("Something has gone wrong please refresh the page and try again.")
+        location.reload();
+        console.log("something has gone wrong");
+      }
     });
   }    
 }

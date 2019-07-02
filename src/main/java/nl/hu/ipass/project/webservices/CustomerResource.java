@@ -70,62 +70,63 @@ public class CustomerResource {
                                    @FormParam("service5") int service5,
                                    @FormParam("service6") int service6){
 
-        ServiceDaoPostgressImpl serviceDao = new ServiceDaoPostgressImpl();
+            ServiceDaoPostgressImpl serviceDao = new ServiceDaoPostgressImpl();
 
-        ArrayList<Service> services = new ArrayList<>();
+            ArrayList<Service> services = new ArrayList<>();
 
-        if(service1 != 0){
-            Service Service1 = serviceDao.getServiceByID(service1);
-            services.add(Service1);
-        }
-        if (service2 != 0){
-            Service Service2 = serviceDao.getServiceByID(service2);
-            services.add(Service2);
-        }
-        if (service3 != 0){
-            Service Service3 = serviceDao.getServiceByID(service3);
-            services.add(Service3);
-        }
-        if (service4 != 0){
-            Service Service4 = serviceDao.getServiceByID(service4);
-            services.add(Service4);
-        }
-        if (service5 != 0){
-            Service Service5 = serviceDao.getServiceByID(service5);
-            services.add(Service5);
-        }
-        if (service6 != 0){
-            Service Service6 = serviceDao.getServiceByID(service6);
-            services.add(Service6);
-        }
+            if (service1 != 0) {
+                Service Service1 = serviceDao.getServiceByID(service1);
+                services.add(Service1);
+            }
+            if (service2 != 0) {
+                Service Service2 = serviceDao.getServiceByID(service2);
+                services.add(Service2);
+            }
+            if (service3 != 0) {
+                Service Service3 = serviceDao.getServiceByID(service3);
+                services.add(Service3);
+            }
+            if (service4 != 0) {
+                Service Service4 = serviceDao.getServiceByID(service4);
+                services.add(Service4);
+            }
+            if (service5 != 0) {
+                Service Service5 = serviceDao.getServiceByID(service5);
+                services.add(Service5);
+            }
+            if (service6 != 0) {
+                Service Service6 = serviceDao.getServiceByID(service6);
+                services.add(Service6);
+            }
 
-        Order order = new Order(orderID,services);
+            Order order = new Order(orderID, services);
 
-        ArrayList<Order> orders = new ArrayList<>();
+            ArrayList<Order> orders = new ArrayList<>();
 
-        orders.add(order);
+            orders.add(order);
 
-        System.out.println(order);
+            System.out.println(order);
 
-        CustomerDaoPosgressImpl custdao = new CustomerDaoPosgressImpl();
-        PackageDaoPosgressImpl packdao = new PackageDaoPosgressImpl();
-        OrderDaoPostgressImpl orderdao = new OrderDaoPostgressImpl();
-
-
-        Package pakket = new Package(packageID,packageName,packagePrice,orders);
-
-        Customer customer = new Customer(customerID,companyName,kvkNumber,email,phonenumber,pakket);
-
-        custdao.addCustomer(customer);
-        packdao.addPackage(pakket,customer);
-
-        for (int i = 0; i < services.size();i++){
-            orderdao.addOrder(pakket,services.get(i),order);
-        }
+            CustomerDaoPosgressImpl custdao = new CustomerDaoPosgressImpl();
+            PackageDaoPosgressImpl packdao = new PackageDaoPosgressImpl();
+            OrderDaoPostgressImpl orderdao = new OrderDaoPostgressImpl();
 
 
-        return Response.ok(customer).build();
+            Package pakket = new Package(packageID, packageName, packagePrice, orders);
 
+            Customer customer = new Customer(customerID, companyName, kvkNumber, email, phonenumber, pakket);
+
+            if(!custdao.addCustomer(customer)){
+                return Response.status(409).build();
+            }
+            packdao.addPackage(pakket, customer);
+
+            for (int i = 0; i < services.size(); i++) {
+                orderdao.addOrder(pakket, services.get(i), order);
+            }
+
+
+            return Response.ok(customer).build();
     }
 
     @PUT

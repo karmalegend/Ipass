@@ -188,6 +188,10 @@ label{
   cursor: pointer;
 }
 
+svg{
+    color: white;
+  }
+  
 
 
 input:read-only { color:grey; }
