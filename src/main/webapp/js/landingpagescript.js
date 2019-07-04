@@ -2,6 +2,12 @@ var customername;
 var customerEmail;
 var customerPhone;
 
+
+
+//force github update because heroku doesn't see updated repo
+
+
+
 //this function is the initial load function fo the webpage it fetches all the data
 // and parsaes it into a json format.
 // If the user does not have the correct permissions to acces the fetch
