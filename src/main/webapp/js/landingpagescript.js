@@ -44,6 +44,8 @@ function initialLoadIn(response){
 function renderCustomer(customer){
     //append all this to div class = container to add it to body
 
+    console.log(customer);
+
     var row = document.createElement("div");
     row.className = "row";
 
@@ -519,6 +521,7 @@ function saveCustomerFunction(event){
   };
 
   console.log(formData.get("price").length);
+  console.log(formData.get("packagename"));
 
   //validate userinput
   if(formData.get("service1") > 8 || formData.get("service2") > 8 || formData.get("service3") > 8 || formData.get("service4") > 8 
@@ -546,21 +549,20 @@ function saveCustomerFunction(event){
     event.currentTarget.disabled = true;
     event.path[0].appendChild(imgload);
     fetch("restservices/customer", fetchoptions)
+    .then(response => response.json())
     .then(function(response){
       if(response.ok){
-        response = response.json();
-        renderCustomer(response);
-        // if customer is added close the form
-        cancelCustomerFunction();
-      }
-      else{
+      renderCustomer(response);
+      cancelCustomerFunction();
+      }})
+    .catch(function(error){
+        console.log(error);
         alert("Something has gone wrong please refresh the page and try again.")
         location.reload();
         console.log("something has gone wrong");
-      }
-    });
-  }    
-}
+        window.location.href = "../";
+     });    
+}}
 
 
 

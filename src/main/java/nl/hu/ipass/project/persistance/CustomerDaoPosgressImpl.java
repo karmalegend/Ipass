@@ -38,6 +38,7 @@ public class CustomerDaoPosgressImpl extends PostgresBaseDao implements Customer
                 Package pakket = packagedao.getPackageByCustomerID(id);
 
                 Customer tempCust = new Customer(id, name, kvknum, email, phNum,pakket);
+                System.out.println(tempCust);
                 allCustomers.add(tempCust);
             }
             return allCustomers;

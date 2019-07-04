@@ -78,6 +78,7 @@ public class CustomerResource {
                                    @FormParam("service5") int service5,
                                    @FormParam("service6") int service6){
 
+
             ServiceDaoPostgressImpl serviceDao = new ServiceDaoPostgressImpl();
 
             ArrayList<Service> services = new ArrayList<>();
@@ -135,7 +136,6 @@ public class CustomerResource {
             for (int i = 0; i < services.size(); i++) {
                 orderdao.addOrder(pakket, services.get(i), order);
             }
-
 
             return Response.ok(customer).build();
     }
