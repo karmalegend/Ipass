@@ -565,7 +565,6 @@ function saveCustomerFunction(event){
         alert("Something has gone wrong please refresh the page and try again.")
         location.reload();
         console.log("something has gone wrong");
-        window.location.href = "../";
      });    
 }}
 
