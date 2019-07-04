@@ -557,10 +557,9 @@ function saveCustomerFunction(event){
     fetch("restservices/customer", fetchoptions)
     .then(response => response.json())
     .then(function(response){
-      if(response.ok){
       renderCustomer(response);
       cancelCustomerFunction();
-      }})
+      })
     .catch(function(error){
         console.log(error);
         alert("Something has gone wrong please refresh the page and try again.")
